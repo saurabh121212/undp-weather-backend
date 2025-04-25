@@ -19,11 +19,11 @@ module.exports = (sequelize, DataTypes) => {
             minlength: [3, 'description must be at least 3 characters long'],
         },
         todate: {
-            type: DataTypes.Date,
+            type: DataTypes.DATE,
             allowNull: false, // or false if required
         },
         fromdate: {
-            type: DataTypes.Date,
+            type: DataTypes.DATE,
             allowNull: false, // or false if required
         },
         disasterType: {
