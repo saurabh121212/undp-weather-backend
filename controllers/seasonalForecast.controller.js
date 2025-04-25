@@ -1,0 +1,77 @@
+const BaseRepo = require('../services/BaseRepository');
+const { SeasonalForecastModel } = require('../models');
+const {validationResult} = require('express-validator');
+
+
+module.exports.add = async (req, res, next) => {
+
+    const error = validationResult(req);
+    if(!error.isEmpty()){
+        return res.status(400).json({error: error.array()});
+    }
+
+    const payload = req.body;
+
+    const SeasonalForecast = await BaseRepo.baseCreate(SeasonalForecastModel, payload);
+    if(!SeasonalForecast){
+        return res.status(400).json({error: 'Error creating Seasonal Forecast'});
+    }
+    res.status(201).json(SeasonalForecast);
+}
+
+
+module.exports.get = async (req, res, next) => {
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+
+    const params = {
+      searchParams: {},
+      limit: limit,
+      offset: offset,
+      page: page,
+      order:[["id","DESC"]],
+  }
+    const SeasonalForecast = await BaseRepo.baseList(SeasonalForecastModel, params);
+    if(!SeasonalForecast){
+        return res.status(400).json({error: 'Error fetching Seasonal Forecast'});
+    }
+    res.status(201).json(SeasonalForecast);
+}
+
+
+module.exports.update = async (req, res, next) => {
+
+    const error = validationResult(req);
+    if(!error.isEmpty()){
+        return res.status(400).json({error: error.array()});
+    }
+
+    const payload = req.body;
+    const id = req.params.id;
+
+    const SeasonalForecast = await BaseRepo.baseUpdate(SeasonalForecastModel, {id}, payload);
+    if(!SeasonalForecast){
+        return res.status(400).json({error: 'Error updating Seasonal Forecast'});
+    }
+    res.status(201).json({
+        message: 'Seasonal Forecast updated successfully',
+        data: SeasonalForecast
+    });
+}
+
+
+module.exports.delete = async (req, res, next) => {
+
+    const id = req.params.id;
+
+    const SeasonalForecast = await BaseRepo.baseDelete(SeasonalForecastModel, {id});
+    if(!SeasonalForecast){
+        return res.status(400).json({error: 'Error deleting Seasonal Forecast'});
+    }
+    res.status(201).json({
+        message: 'Seasonal Forecast deleted successfully',
+        data: SeasonalForecast
+    });
+}
