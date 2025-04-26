@@ -5,6 +5,11 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
+app.use(cors());
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 const events = require('events');
 const eventEmitter = new events.EventEmitter();
 
@@ -12,17 +17,6 @@ const eventEmitter = new events.EventEmitter();
 global._config = require('./config/config.js');
 console.log('Environment:', _config.app);
 
-app.use(cors());
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
-app.options('*', cors());
-
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
@@ -50,7 +44,6 @@ app.use('/api/faqs', FaqsRouter);
 app.use('/api/risk-and-response', RiskAndResponseRouter);
 app.use('/api/seasonal-forecast', SeasonalForecastRouter);
 app.use('/api/weather-alarts', WeatherAlartsRouter);
-
 
 
 const db = require('./db/database.js')(eventEmitter);
