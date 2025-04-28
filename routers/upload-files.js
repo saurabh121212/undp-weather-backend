@@ -6,6 +6,8 @@ router.post('/weather-categories-image',  uploader("image", 20, "weatherCategori
 
 router.post('/risk-and-response-image',  uploader("image", 20, "riskAndResponse").single("file"), FileController.uploadFile);
 
+router.post('/report-incident-image',  uploader("image", 20, "reportIncident").single("file"), FileController.uploadFile);
+
 router.post('/seasonal-forecast',  uploader("document", 20, "seasonalForecast").single("file"), FileController.uploadFile);
 
 

@@ -10,6 +10,7 @@ const storeDestination = {
     'weatherCategories': "weather-categories/",
     'riskAndResponse': "risk-and-response/",
     'seasonalForecast': "seasonal-forecast/",
+    'reportIncident': "report-incident/",
 }
 
 module.exports =  (fileType, fileSize, filePath) => {
