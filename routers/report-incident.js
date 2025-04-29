@@ -13,7 +13,7 @@ router.post('/add',[
     body('location').isLength({min: 3}).withMessage('Location must be at least 3 characters long'),
     body('message').isLength({min: 3}).withMessage('Message must be at least 3 characters long'),
     body('url').isLength({min: 3}).withMessage('url must be at least 3 characters long'),
-], ReportIncidentController.add);
+],authMiddleware.authUser, ReportIncidentController.add);
 
 // router.put('/update/:id',[
 //     body('name').isLength({min: 3}).withMessage('name must be at least 3 characters long'),

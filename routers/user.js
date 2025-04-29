@@ -2,37 +2,49 @@ const express = require('express');
 const router = express.Router();
 const {body} = require('express-validator');
 const authMiddleware = require('../middelware/auth.middelware');
-const userController = require('../controllers/admin.controller');
-
+const userController = require('../controllers/user.controller');
 
 router.post('/ragister',[
-    body('email').isEmail().withMessage('Please enter a valid email'),
-    body('password').isLength({min: 5}).withMessage('Password must be at least 5 characters long'),
     body('name').isLength({min: 3}).withMessage('Name must be at least 3 characters long'),
-], userController.ragisterAdmin);
-
+    body('phone').isLength({min: 8}).withMessage('Phone number must be at least 8 characters long'),
+    body('email').isEmail().withMessage('Please enter a valid email'),
+    body('location').isLength({min: 3}).withMessage('Location must be at least 3 characters long'),
+    body('address').isLength({min: 3}).withMessage('Address must be at least 3 characters long'),
+    body('password').isLength({min: 5}).withMessage('Password must be at least 5 characters long'),
+    body('divice_id').notEmpty().withMessage('divice_id is required'),
+    body('divice_type').notEmpty().withMessage('divice_type is required'),
+    body('divice_token').notEmpty().withMessage('divice_token is required'),
+    body('is_ragistered').notEmpty().withMessage('is_ragistered is required'),
+], userController.ragisterUser);
 
 router.post('/login',[
     body('email').isEmail().withMessage('Please enter a valid email'),
     body('password'),
-], userController.loginAdmin);
+], userController.loginUser);
 
 router.post('/add_user_without_ragister',[
-    body('divice_id').required().withMessage('divice_id is required'),
-    body('divice_type').required().withMessage('divice_type is required'),
-    body('divice_token').required().withMessage('divice_token is required'),
-    body('is_ragistered').required().withMessage('is_ragistered is required'),
-], userController.loginAdmin);
+    body('divice_id').notEmpty().withMessage('divice_id is required'),
+    body('divice_type').notEmpty().withMessage('divice_type is required'),
+    body('divice_token').notEmpty().withMessage('divice_token is required'),
+    body('is_ragistered').notEmpty().withMessage('is_ragistered is required'),
+], userController.addUserWithoutRagister);
 
+router.put('/update_profile/:id',[
+    body('name').isLength({min: 3}).withMessage('Name must be at least 3 characters long'),
+    body('phone').isLength({min: 8}).withMessage('Phone number must be at least 8 characters long'),
+    body('email').isEmail().withMessage('Please enter a valid email'),
+    body('location').isLength({min: 3}).withMessage('Location must be at least 3 characters long'),
+    body('address').isLength({min: 3}).withMessage('Address must be at least 3 characters long'),
+],authMiddleware.authUser, userController.updateProfile);
+ 
+router.get('/profile/:id',authMiddleware.authUser, userController.getProfile);
 
-router.get('/profile',authMiddleware.authAdmin, userController.getProfile);
+router.post('/send_otp', userController.sendOTP);
 
-router.get('/update',authMiddleware.authAdmin, userController.getProfile);
+router.put('/forget_password/:email',[
+    body('password').isLength({min: 5}).withMessage('Password must be at least 5 characters long'),
+],userController.forgetPassword);
 
-router.put('/forget_password',authMiddleware.authAdmin, userController.getProfile);
-
-router.put('/send_otp',authMiddleware.authAdmin, userController.getProfile);
-
-router.get('/logout',authMiddleware.authAdmin, userController.logout);
+// router.get('/logout',authMiddleware.authAdmin, userController.logout);
 
 module.exports = router;

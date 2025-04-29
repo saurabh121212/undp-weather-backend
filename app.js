@@ -35,6 +35,7 @@ const WeatherAlartsRouter = require('./routers/weather-alarts.js');
 const FeedbackRouter = require('./routers/feedback.js');
 const ReportIncidentRouter = require('./routers/report-incident.js');
 const WeatherDataRequestsRouter = require('./routers/weather-data-requests.js');
+const UserRouter = require('./routers/user.js');
 
 
 app.use('/api/admin', AdminRouter);
@@ -49,6 +50,7 @@ app.use('/api/weather-alarts', WeatherAlartsRouter);
 app.use('/api/feedback', FeedbackRouter);
 app.use('/api/report-incident', ReportIncidentRouter);
 app.use('/api/weather-data-requests', WeatherDataRequestsRouter);
+app.use('/api/user', UserRouter);
 
 
 const db = require('./db/database.js')(eventEmitter);

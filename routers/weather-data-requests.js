@@ -16,7 +16,7 @@ router.post('/add',[
     body('mediume').isLength({min: 3}).withMessage('Mediume must be at least 3 characters long'),
     body('use_of_data').isLength({min: 3}).withMessage('Use of data must be at least 3 characters long'),
 
-], WeatherDataController.add);
+],authMiddleware.authUser,WeatherDataController.add);
 
 // router.put('/update/:id',[
 //     body('name').isLength({min: 3}).withMessage('name must be at least 3 characters long'),
