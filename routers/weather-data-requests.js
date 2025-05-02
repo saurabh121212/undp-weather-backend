@@ -10,8 +10,8 @@ const WeatherDataController = require('../controllers/weatherDataReques.controll
 
 router.post('/add',[
     body('name').isLength({min: 3}).withMessage('name must be at least 3 characters long'),
-    body('mobile').isLength({min: 3}).withMessage('Mobile must be at least 8 characters long'),
-    body('email').isLength({min: 3}).withMessage('Email must be at least 3 characters long'),
+    body('mobile').isLength({min: 8}).withMessage('Mobile must be at least 8 characters long'),
+    body('email').isEmail().withMessage('Email must be a valid email address'),
     body('message').isLength({min: 3}).withMessage('Message must be at least 3 characters long'),
     body('mediume').isLength({min: 3}).withMessage('Mediume must be at least 3 characters long'),
     body('use_of_data').isLength({min: 3}).withMessage('Use of data must be at least 3 characters long'),

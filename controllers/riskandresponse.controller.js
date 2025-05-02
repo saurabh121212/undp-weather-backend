@@ -12,12 +12,20 @@ module.exports.add = async (req, res, next) => {
 
     const payload = req.body;
 
+    try{
     const RiskandResponse = await BaseRepo.baseCreate(RiskandResponseModel, payload);
     if(!RiskandResponse){
         return res.status(400).json({error: 'Error creating Risk and Response Strategies'});
     }
     res.status(201).json(RiskandResponse);
 }
+    catch(err){
+        console.log(err);
+        return res.status(400).json({error: 'Internal Server Error'});
+    }
+}
+
+
 
 
 module.exports.get = async (req, res, next) => {
@@ -33,11 +41,17 @@ module.exports.get = async (req, res, next) => {
       page: page,
       order:[["id","DESC"]],
   }
+  try{
     const RiskandResponse = await BaseRepo.baseList(RiskandResponseModel, params);
     if(!RiskandResponse){
         return res.status(400).json({error: 'Error fetching Risk and Response Strategies'});
     }
     res.status(201).json(RiskandResponse);
+}
+    catch(err){
+        console.log(err);
+        return res.status(400).json({error: 'Internal Server Error'});
+    }
 }
 
 
@@ -51,6 +65,7 @@ module.exports.update = async (req, res, next) => {
     const payload = req.body;
     const id = req.params.id;
 
+    try{
     const RiskandResponse = await BaseRepo.baseUpdate(RiskandResponseModel, {id}, payload);
     if(!RiskandResponse){
         return res.status(400).json({error: 'Error updating Risk and Response Strategies'});
@@ -60,12 +75,19 @@ module.exports.update = async (req, res, next) => {
         data: RiskandResponse
     });
 }
+    catch(err){
+        console.log(err);
+        return res.status(400).json({error: 'Internal Server Error'});
+    }
+}
 
 
 module.exports.delete = async (req, res, next) => {
 
     const id = req.params.id;
 
+
+    try{
     const RiskandResponse = await BaseRepo.baseDelete(RiskandResponseModel, {id});
     if(!RiskandResponse){
         return res.status(400).json({error: 'Error deleting Risk and Response Strategies'});
@@ -74,4 +96,9 @@ module.exports.delete = async (req, res, next) => {
         message: 'Risk and Response Strategies deleted successfully',
         data: RiskandResponse
     });
+}
+    catch(err){
+        console.log(err);
+        return res.status(400).json({error: 'Internal Server Error'});
+    }
 }

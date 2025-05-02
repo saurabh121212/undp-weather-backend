@@ -11,12 +11,16 @@ router.post('/add',[
     body('name').isLength({min: 3}).withMessage('name must be at least 3 characters long'),
     body('description').isLength({min: 3}).withMessage('description must be at least 3 characters long'),
     body('url').isLength({min: 3}).withMessage('url must be at least 3 characters long'),
+    body('todate').notEmpty().withMessage('To Date is required'),
+    body('fromdate').notEmpty().withMessage('From Date is required'),
 ],authMiddleware.authAdmin, seasonalForecastController.add);
 
 router.put('/update/:id',[
     body('name').isLength({min: 3}).withMessage('name must be at least 3 characters long'),
     body('description').isLength({min: 3}).withMessage('description must be at least 3 characters long'),
     body('url').isLength({min: 3}).withMessage('url must be at least 3 characters long'),
+    body('todate').notEmpty().withMessage('To Date is required'),
+    body('fromdate').notEmpty().withMessage('From Date is required'),
 ] ,authMiddleware.authAdmin, seasonalForecastController.update);
 
 // This is used in Mobile app to get the list of FAQs

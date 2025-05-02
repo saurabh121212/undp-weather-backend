@@ -8,11 +8,11 @@ const weatherAlertTypeController = require('../controllers/weatherAlertType.cont
 // It requires the user to be authenticated as an admin
 
 router.post('/add',[
-    body('name').isLength({min: 5}).withMessage('Name must be at least 3 characters long'),
+    body('name').isLength({min: 3}).withMessage('Name must be at least 3 characters long'),
 ],authMiddleware.authAdmin, weatherAlertTypeController.addWeatherAlertType);
 
 router.put('/update/:id',[
-    body('name').isLength({min: 5}).withMessage('Name must be at least 3 characters long'),
+    body('name').isLength({min: 3}).withMessage('Name must be at least 3 characters long'),
 ],authMiddleware.authAdmin, weatherAlertTypeController.updateWeatherAlertType);
 
 

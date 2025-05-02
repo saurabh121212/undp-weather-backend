@@ -2,6 +2,9 @@ const BaseRepo = require('../services/BaseRepository');
 const { UserModel } = require('../models');
 const {validationResult} = require('express-validator');
 
+const sendEmail = require('../mailer/mailerFile');
+
+
 module.exports.addUserWithoutRagister = async (req, res, next) => {
 
     const error = validationResult(req);
@@ -41,8 +44,9 @@ module.exports.sendOTP = async (req, res, next) => {
         return res.status(400).json({error: error.array()});
     }
 
-    const {phone, email} = req.body;
+    const {phone, email, otp} = req.body;
     
+    try{
     const isPhoneExist = await UserModel.findOne({ where: { phone }});
     if(isPhoneExist){
         return res.status(400).json({error: 'Phone number already exists'});
@@ -54,9 +58,13 @@ module.exports.sendOTP = async (req, res, next) => {
     }
 
         // write send otp code here on email Id
-
-
+    sendEmail(otp,1,email);
     res.status(201).json({message: 'OTP sent successfully to your email'});
+}
+    catch(err){
+        console.log(err);
+        return res.status(500).json({error: 'Internal server error'});
+    }
 }
 
 
@@ -202,8 +210,6 @@ module.exports.forgetPassword = async (req, res, next) => {
         data: user
     });
 }
-
-
 
 
 module.exports.logout = async (req, res, next) => {

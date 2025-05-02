@@ -12,11 +12,17 @@ module.exports.add = async (req, res, next) => {
 
     const payload = req.body;
 
+    try{
     const ReportIncident = await BaseRepo.baseCreate(ReportIncidentModel, payload);
     if(!ReportIncident){
         return res.status(400).json({error: 'Error creating Report Incident'});
     }
     res.status(201).json(ReportIncident);
+}
+    catch(err){
+        console.log(err);
+        return res.status(500).json({error: 'Internal Server Error'});
+    }
 }
 
 
@@ -33,9 +39,15 @@ module.exports.get = async (req, res, next) => {
       page: page,
       order:[["id","DESC"]],
   }
+    try{
     const ReportIncident = await BaseRepo.baseList(ReportIncidentModel, params);
     if(!ReportIncident){
         return res.status(400).json({error: 'Error fetching Report Incident'});
     }
     res.status(201).json(ReportIncident);
+}
+    catch(err){
+        console.log(err);
+        return res.status(500).json({error: 'Internal Server Error'});
+    }
 }

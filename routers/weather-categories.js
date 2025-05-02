@@ -8,12 +8,12 @@ const weatherCategoriesController = require('../controllers/weatherCategories.co
 // It requires the user to be authenticated as an admin
 
 router.post('/add',[
-    body('name').isLength({min: 5}).withMessage('Name must be at least 3 characters long'),
+    body('name').isLength({min: 3}).withMessage('Name must be at least 3 characters long'),
     body('url').notEmpty().withMessage('url is required'),
 ],authMiddleware.authAdmin, weatherCategoriesController.addWeatherCategories);
 
 router.put('/update/:id',[
-    body('name').isLength({min: 5}).withMessage('Name must be at least 3 characters long'),
+    body('name').isLength({min: 3}).withMessage('Name must be at least 3 characters long'),
     body('url').notEmpty().withMessage('url is required'),
 ],authMiddleware.authAdmin, weatherCategoriesController.updateWeatherCategories);
 

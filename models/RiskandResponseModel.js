@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         url: {
             type: DataTypes.STRING(500),
             allowNull: true, // or false if required
-            minlength: [3, 'question Must be at least 3 characters long'],
+            minlength: [3, 'url Must be at least 3 characters long'],
         },
     }, {
         paranoid: true,

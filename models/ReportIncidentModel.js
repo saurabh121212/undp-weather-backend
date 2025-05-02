@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         mobile: {
             type: DataTypes.STRING(100),
             allowNull: false, // or false if required
-            minlength: [3, 'Mobile must be at least 3 characters long'],
+            minlength: [8, 'Mobile must be at least 3 characters long'],
         },
         location: {
             type: DataTypes.STRING(200),

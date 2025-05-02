@@ -12,11 +12,17 @@ module.exports.add = async (req, res, next) => {
 
     const payload = req.body;
 
+    try{
     const feedback = await BaseRepo.baseCreate(FeedbackModel, payload);
     if(!feedback){
         return res.status(400).json({error: 'Error creating feedback'});
     }
     res.status(201).json(feedback);
+}
+    catch(err){
+        console.log(err);
+        return res.status(500).json({error: 'internal server error'});
+    }
 }
 
 
@@ -33,9 +39,15 @@ module.exports.get = async (req, res, next) => {
       page: page,
       order:[["id","DESC"]],
   }
+  try{
     const feedback = await BaseRepo.baseList(FeedbackModel, params);
     if(!feedback){
         return res.status(400).json({error: 'Error fetching feedback'});
     }
     res.status(201).json(feedback);
+}
+    catch(err){
+        console.log(err);
+        return res.status(500).json({error: 'internal server error'});
+    }
 }

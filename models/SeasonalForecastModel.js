@@ -22,6 +22,15 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true, // or false if required
             minlength: [3, 'question Must be at least 3 characters long'],
         },
+        
+        todate: {
+            type: DataTypes.DATE,
+            allowNull: false, // or false if required
+        },
+        fromdate: {
+            type: DataTypes.DATE,
+            allowNull: false, // or false if required
+        },
     }, {
         paranoid: true,
         timestamps: true,
@@ -30,3 +39,4 @@ module.exports = (sequelize, DataTypes) => {
 
     return Model;
 };
+

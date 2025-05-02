@@ -10,23 +10,23 @@ const weatherAlartsController = require('../controllers/weatherAlarts.controller
 router.post('/add',[
     body('name').isLength({min: 3}).withMessage('name must be at least 3 characters long'),
     body('description').isLength({min: 3}).withMessage('description must be at least 3 characters long'),
-    body('todate'),
-    body('fromdate'),
-    body('disasterType').isLength({min: 3}).withMessage('disasterType must be at least 3 characters long'),
-    body('severity').isLength({min: 3}).withMessage('severity must be at least 3 characters long'),
-    body('responseType').isLength({min: 3}).withMessage('responseType must be at least 3 characters long'),
-    body('certaintyType').isLength({min: 3}).withMessage('certaintyType must be at least 3 characters long'),
+    body('todate').notEmpty().withMessage('To Date is required'),
+    body('fromdate').notEmpty().withMessage('From Date is required'),
+    body('disasterType').notEmpty().withMessage('Disaster Type is required'),
+    body('severity').notEmpty().withMessage('Severity is required'),
+    body('responseType').notEmpty().withMessage('Response Type is required'),
+    body('certaintyType').notEmpty().withMessage('Certainty Type is required'),
 ],authMiddleware.authAdmin, weatherAlartsController.add);
 
 router.put('/update/:id',[
     body('name').isLength({min: 3}).withMessage('name must be at least 3 characters long'),
     body('description').isLength({min: 3}).withMessage('description must be at least 3 characters long'),
-    body('todate'),
-    body('fromdate'),
-    body('disasterType').isLength({min: 3}).withMessage('disasterType must be at least 3 characters long'),
-    body('severity').isLength({min: 3}).withMessage('severity must be at least 3 characters long'),
-    body('responseType').isLength({min: 3}).withMessage('responseType must be at least 3 characters long'),
-    body('certaintyType').isLength({min: 3}).withMessage('certaintyType must be at least 3 characters long'),
+    body('todate').notEmpty().withMessage('To Date is required'),
+    body('fromdate').notEmpty().withMessage('From Date is required'),
+    body('disasterType').notEmpty().withMessage('Disaster Type is required'),
+    body('severity').notEmpty().withMessage('Severity is required'),
+    body('responseType').notEmpty().withMessage('Response Type is required'),
+    body('certaintyType').notEmpty().withMessage('Certainty Type is required'),
 ] ,authMiddleware.authAdmin, weatherAlartsController.update);
 
 // This is used in Mobile app to get the list of FAQs
