@@ -35,6 +35,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false, // or false if required
             minlength: [3, 'Medium must be at least 3 characters long'],
         },
+        other: {
+            type: DataTypes.STRING(500),
+            allowNull: false, // or false if required
+            minlength: [3, 'Other must be at least 3 characters long'],
+        },
         use_of_data: {
             type: DataTypes.STRING(400),
             allowNull: false, // or false if required

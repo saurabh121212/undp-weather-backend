@@ -22,7 +22,16 @@ router.post('/add',[
 // ] ,authMiddleware.authAdmin, FeedbackController.update);
 
 // This is used in Mobile app to get the list of FAQs
-// router.get('/list', WeatherDataController.get);
+
+router.get('/weather_updates', WeatherDetailsController.weatherUpdates);
+
+router.get('/location_weather_updates', WeatherDetailsController.locationWeatherUpdates);
+
+router.get('/search_location', WeatherDetailsController.searchLocation);
+
+
+
+
 
 // router.put('/delete/:id',authMiddleware.authAdmin, FeedbackController.delete);
 

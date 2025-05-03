@@ -15,6 +15,8 @@ module.exports = {
     baseFindById: findById,
     baseGalleryList: GalleryList,
     baseFindByform_code: findByform_code,
+    getWeatherDataFromDate: getWeatherDataFromDate,
+    getSearchByLocation: getSearchByLocation,
 };
 
 function create(modal, data) {
@@ -177,3 +179,45 @@ function deleteEntry(modal, searchParams) {
 function baseRestore(modal, searchParams) {
     return modal.restore({ where: searchParams });
 }
+
+
+async function getWeatherDataFromDate(modal, locationId, startDate) {
+    try {
+      const results = await modal.findAll({
+        where: {
+          deletedAt: null,
+          location_id: locationId,
+          date: {
+            [Op.gte]: startDate
+          }
+        },
+        // order: [['id', 'DESC']],
+      });
+  
+      return results;
+    } catch (error) {
+      console.error('Error fetching weather data:', error);
+      throw error;
+    }
+  }
+
+
+
+  async function getSearchByLocation(modal, location_name, startDate) {
+    try {
+      const results = await modal.findAll({
+        where: {
+          deletedAt: null,
+          date: startDate,
+          location_name: {
+            [Op.like]: location_name+'%', // e.g., 'Ro%' or '%Ro%'
+          }
+        },
+        // order: [['id', 'DESC']],
+      });
+      return results;
+    } catch (error) {
+      console.error('Error fetching weather data:', error);
+      throw error;
+    }
+  }

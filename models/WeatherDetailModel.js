@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true
         },
         date: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false, // or false if required
         },
         location_id: {
