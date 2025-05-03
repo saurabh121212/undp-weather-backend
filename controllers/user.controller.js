@@ -137,24 +137,28 @@ module.exports.loginUser = async (req, res, next) => {
     if (!error.isEmpty()) {
         return res.status(400).json({ error: error.array() });
     }
-    const { email, password } = req.body;
+    const { email, password ,divice_id,divice_type,divice_token } = req.body;
 
     const user = await UserModel.findOne({ where: {email}, attributes: ['id', 'email', 'password', 'name'],});
     if (!user) {
         return res.status(400).json({ error: 'Invalid email or password 1' });
     }
+    
+    console.log("user 1",user);
 
     const isMatch = await user.comparePassword(password); 
     if (!isMatch) {
         return res.status(400).json({ error: 'Invalid email or password 2' });
     }
 
+    console.log("user id ",user.dataValues.id);
+    const id = user.dataValues.id;
     const token = await user.generateAuthToken(); // ✅ instance method
+
+    await BaseRepo.baseUpdate(UserModel, {id}, {divice_id,divice_type,divice_token});
 
     res.status(200).json({ user, token });
 };
-
-
 
 
 module.exports.getProfile = async (req, res, next) => {
@@ -170,6 +174,41 @@ module.exports.getProfile = async (req, res, next) => {
     }
     res.status(200).json({ user});
 };
+
+
+
+module.exports.getAllUserProfile = async (req, res, next) => {
+   
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+        return res.status(400).json({ error: error.array() });
+    }
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+
+    const params = {
+      searchParams: {},
+      limit: limit,
+      offset: offset,
+      page: page,
+      order:[["id","DESC"]],
+    }
+
+     try {
+        const user = await BaseRepo.baseList(UserModel, params);
+        if(!user){
+            return res.status(400).json({error: 'Error fetching Users'});
+        }
+        res.status(201).json(user);
+        } 
+        catch (error) {
+        console.error(error);
+        return res.status(500).json({error: 'Internal server error'});
+        }
+};
+
 
 module.exports.updateProfile = async (req, res, next) => {
     const error = validationResult(req);

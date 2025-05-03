@@ -13,7 +13,6 @@ module.exports = {
     baseRestore: baseRestore,
     baseCount: count,
     baseFindById: findById,
-
     baseGalleryList: GalleryList,
     baseFindByform_code: findByform_code,
 };

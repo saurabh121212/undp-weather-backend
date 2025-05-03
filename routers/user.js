@@ -20,6 +20,9 @@ router.post('/ragister',[
 router.post('/login',[
     body('email').isEmail().withMessage('Please enter a valid email'),
     body('password'),
+    body('divice_id').notEmpty().withMessage('divice_id is required'),
+    body('divice_type').notEmpty().withMessage('divice_type is required'),
+    body('divice_token').notEmpty().withMessage('divice_token is required'),
 ], userController.loginUser);
 
 router.post('/add_user_without_ragister',[
@@ -37,13 +40,17 @@ router.put('/update_profile/:id',[
     body('address').isLength({min: 3}).withMessage('Address must be at least 3 characters long'),
 ],authMiddleware.authUser, userController.updateProfile);
  
-router.get('/profile/:id',authMiddleware.authUser, userController.getProfile);
+router.get('/profile/:id',userController.getProfile);
+
 
 router.post('/send_otp', userController.sendOTP);
 
 router.put('/forget_password/:email',[
     body('password').isLength({min: 5}).withMessage('Password must be at least 5 characters long'),
 ],userController.forgetPassword);
+
+
+router.get('/list', userController.getAllUserProfile);
 
 // router.get('/logout',authMiddleware.authAdmin, userController.logout);
 

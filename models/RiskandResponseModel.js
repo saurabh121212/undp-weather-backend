@@ -17,6 +17,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false, // or false if required
             minlength: [3, 'description must be at least 3 characters long'],
         },
+        short_description: {
+            type: DataTypes.STRING,
+            allowNull: false, // or false if required
+            minlength: [3, 'Short description must be at least 3 characters long'],
+        },
         url: {
             type: DataTypes.STRING(500),
             allowNull: true, // or false if required

@@ -16,6 +16,7 @@ router.post('/add',[
     body('severity').notEmpty().withMessage('Severity is required'),
     body('responseType').notEmpty().withMessage('Response Type is required'),
     body('certaintyType').notEmpty().withMessage('Certainty Type is required'),
+    body('short_description').isLength({min: 3}).withMessage('Short description must be at least 3 characters long'),
 ],authMiddleware.authAdmin, weatherAlartsController.add);
 
 router.put('/update/:id',[
@@ -27,6 +28,7 @@ router.put('/update/:id',[
     body('severity').notEmpty().withMessage('Severity is required'),
     body('responseType').notEmpty().withMessage('Response Type is required'),
     body('certaintyType').notEmpty().withMessage('Certainty Type is required'),
+    body('short_description').isLength({min: 3}).withMessage('Short description must be at least 3 characters long'),
 ] ,authMiddleware.authAdmin, weatherAlartsController.update);
 
 // This is used in Mobile app to get the list of FAQs

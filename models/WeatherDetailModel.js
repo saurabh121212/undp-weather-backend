@@ -1,7 +1,7 @@
 const e = require("cors");
 
 module.exports = (sequelize, DataTypes) => {
-    const Model = sequelize.define('WeatherDataRequestModel', {
+    const Model = sequelize.define('WeatherDetailModel', {
         id: {
             type: DataTypes.BIGINT,
             allowNull: false,
@@ -85,7 +85,7 @@ module.exports = (sequelize, DataTypes) => {
     }, {
         paranoid: true,
         timestamps: true,
-        tableName: 'weatherDataRequests', // Optional: useful for clarity and pluralization control
+        tableName: 'WeatherDetails', // Optional: useful for clarity and pluralization control
     });
 
     return Model;

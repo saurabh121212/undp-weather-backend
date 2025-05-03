@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false, // or false if required
             minlength: [3, 'description must be at least 3 characters long'],
         },
+        short_description: {
+            type: DataTypes.STRING,
+            allowNull: false, // or false if required
+            minlength: [3, 'Short description must be at least 3 characters long'],
+        },
         todate: {
             type: DataTypes.DATE,
             allowNull: false, // or false if required

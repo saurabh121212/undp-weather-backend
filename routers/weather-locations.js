@@ -16,7 +16,7 @@ router.put('/update/:id',[
 ],authMiddleware.authAdmin, weatherLocationsController.updateWeatherLocations);
 
 
-router.get('/list',authMiddleware.authAdmin, weatherLocationsController.getWeatherLocations);
+router.get('/list',weatherLocationsController.getWeatherLocations);
 router.put('/delete/:id',authMiddleware.authAdmin, weatherLocationsController.deleteWeatherLocations);
 
 

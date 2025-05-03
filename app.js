@@ -10,6 +10,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(express.static('public'));
+
+
 const events = require('events');
 const eventEmitter = new events.EventEmitter();
 
@@ -36,6 +39,7 @@ const FeedbackRouter = require('./routers/feedback.js');
 const ReportIncidentRouter = require('./routers/report-incident.js');
 const WeatherDataRequestsRouter = require('./routers/weather-data-requests.js');
 const UserRouter = require('./routers/user.js');
+const WeatherDetailsRouter = require('./routers/weather-details.js');
 
 
 app.use('/api/admin', AdminRouter);
@@ -51,7 +55,7 @@ app.use('/api/feedback', FeedbackRouter);
 app.use('/api/report-incident', ReportIncidentRouter);
 app.use('/api/weather-data-requests', WeatherDataRequestsRouter);
 app.use('/api/user', UserRouter);
-
+app.use('/api/weather-details', WeatherDetailsRouter);
 
 const db = require('./db/database.js')(eventEmitter);
 eventEmitter.once('db-connection-established', () => {
