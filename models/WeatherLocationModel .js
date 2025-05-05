@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(200),
             allowNull: false, // or false if required
             minlength: [3, 'Name Must be at least 3 characters long'],
+            maxlength: [200, 'Name Must be at most 200 characters long'],
         },
         create_time: {
             type: DataTypes.DATE,

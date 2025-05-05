@@ -14,6 +14,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(300),
             allowNull: true, // or false if required
             minlength: [3, 'Name Must be at least 3 characters long'],
+            maxlength: [300, 'Name Must be at most 600 characters long'],
+
         },
         phone: {
             type: DataTypes.STRING(50),
@@ -28,18 +30,30 @@ module.exports = (sequelize, DataTypes) => {
             lowercase: true,
             trim: true,
             minlength: [3, 'Email Must be at least 3 characters long'],
+            maxlength: [300, 'Name Must be at most 600 characters long'],
         },
 
-        location: {
+        location_id: {
             type: DataTypes.STRING(200),
             allowNull: true, // or false if required
-            minlength: [3, 'Location Must be at least 3 characters long'],
+            minlength: [3, 'Location Id Must be at least 3 characters long'],
+            maxlength: [200, 'Name Must be at most 600 characters long'],
+        },
+
+        location_name: {
+            type: DataTypes.STRING(200),
+            allowNull: true, // or false if required
+            minlength: [3, 'Location Name Must be at least 3 characters long'],
+            maxlength: [200, 'Name Must be at most 600 characters long'],
+
         },
 
         address: {
             type: DataTypes.STRING(500),
             allowNull: true, // or false if required
             minlength: [3, 'Address Must be at least 3 characters long'],
+            maxlength: [500, 'Name Must be at most 600 characters long'],
+
         },
 
         password: {
@@ -52,8 +66,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(300),
             allowNull: true // or false if required
         },
-
-
+        
         divice_id: {
             type: DataTypes.STRING(300),
             allowNull: true // or false if required

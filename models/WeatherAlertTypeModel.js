@@ -8,10 +8,10 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true
         },
         name: {
-            type: DataTypes.STRING(600),
+            type: DataTypes.STRING(200),
             allowNull: false, // or false if required
             minlength: [3, 'Name Must be at least 3 characters long'],
-            maxlength: [600, 'Name Must be at most 600 characters long'],
+            maxlength: [200, 'Name Must be at most 600 characters long'],
         },
         create_time: {
             type: DataTypes.DATE,

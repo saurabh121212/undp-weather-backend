@@ -8,19 +8,22 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true
         },
         name: {
-            type: DataTypes.STRING(500),
+            type: DataTypes.STRING(300),
             allowNull: false, // or false if required
             minlength: [3, 'name must be at least 3 characters long'],
+            maxlength: [300, 'name must be at most 300 characters long'],
         },
         description: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(4000),
             allowNull: false, // or false if required
             minlength: [3, 'description must be at least 3 characters long'],
+            maxlength: [4000, 'description must be at most 4000 characters long'],
         },
         short_description: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(200),
             allowNull: false, // or false if required
             minlength: [3, 'Short description must be at least 3 characters long'],
+            maxlength: [150, 'Short description must be at most 150 characters long'],
         },
         url: {
             type: DataTypes.STRING(500),

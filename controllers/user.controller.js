@@ -76,7 +76,7 @@ module.exports.ragisterUser = async (req, res, next) => {
         return res.status(400).json({error: error.array()});
     }
 
-    const {name,phone,email,location,address,password, divice_id, divice_type, divice_token,is_ragistered} = req.body;
+    const {name,phone,email,location_id,location_name,address,password, divice_id, divice_type, divice_token,is_ragistered} = req.body;
 
     const hashedPassword = await UserModel.hashPassword(password.toString());
 
@@ -84,7 +84,7 @@ module.exports.ragisterUser = async (req, res, next) => {
     const isdiviceIdExist = await UserModel.findOne({ where: { divice_id }});
     if(isdiviceIdExist){
         // return res.status(400).json({error: 'Divice ID already exists'});
-            const user = await BaseRepo.baseUpdate(UserModel, {divice_id}, {name,phone,email,location,address,password:hashedPassword,is_ragistered});
+            const user = await BaseRepo.baseUpdate(UserModel, {divice_id}, {name,phone,email,location_id,location_name,address,password:hashedPassword,is_ragistered});
             if(!user){
                 return res.status(400).json({error: 'User Not Ragistered'});
             }
@@ -104,7 +104,8 @@ module.exports.ragisterUser = async (req, res, next) => {
         name:name,
         phone:phone,
         email:email,
-        location:location,
+        location_id:location_id,
+        location_name:location_name,
         address:address,
         password:hashedPassword,
         divice_id:divice_id,
@@ -139,7 +140,7 @@ module.exports.loginUser = async (req, res, next) => {
     }
     const { email, password ,divice_id,divice_type,divice_token } = req.body;
 
-    const user = await UserModel.findOne({ where: {email}, attributes: ['id', 'email', 'password', 'name'],});
+    const user = await UserModel.findOne({ where: {email}, attributes: ['id', 'email', 'password', 'name','location_id','location_name','address'],});
     if (!user) {
         return res.status(400).json({ error: 'Invalid email or password 1' });
     }
@@ -235,12 +236,14 @@ module.exports.forgetPassword = async (req, res, next) => {
         return res.status(400).json({error: error.array()});
     }
 
-    const payload = req.body;
+    const password = req.body.password;
     const email = req.params.email;
 
-    const hashedPassword = await UserModel.hashPassword(payload.password.toString());
+    console.log("password",password.toString());
+    const hashedPassword = await UserModel.hashPassword(password.toString());
 
-    const user = await BaseRepo.baseUpdate(UserModel, {email}, {password: hashedPassword});
+    console.log("hashedPassword",hashedPassword);
+    const user = await BaseRepo.baseUpdate(UserModel, {email}, { password:hashedPassword });
     if(!user){
         return res.status(400).json({error: 'Error Updating User Password'});
     }
