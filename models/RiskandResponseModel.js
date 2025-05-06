@@ -14,13 +14,12 @@ module.exports = (sequelize, DataTypes) => {
             maxlength: [300, 'name must be at most 300 characters long'],
         },
         description: {
-            type: DataTypes.STRING(4000),
+            type: DataTypes.TEXT('long'),
             allowNull: false, // or false if required
             minlength: [3, 'description must be at least 3 characters long'],
-            maxlength: [4000, 'description must be at most 4000 characters long'],
         },
         short_description: {
-            type: DataTypes.STRING(200),
+            type: DataTypes.TEXT('medium'),
             allowNull: false, // or false if required
             minlength: [3, 'Short description must be at least 3 characters long'],
             maxlength: [150, 'Short description must be at most 150 characters long'],

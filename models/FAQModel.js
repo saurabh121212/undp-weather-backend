@@ -8,12 +8,12 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true
         },
         question: {
-            type: DataTypes.STRING(700),
+            type: DataTypes.TEXT('medium'),
             allowNull: false, // or false if required
             minlength: [3, 'question Must be at least 3 characters long'],
         },
         answer: {
-            type: DataTypes.STRING(2000),
+            type: DataTypes.TEXT('long'),
             allowNull: false, // or false if required
             minlength: [3, 'answer Must be at least 3 characters long'],
         },
