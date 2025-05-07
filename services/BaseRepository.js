@@ -1,5 +1,6 @@
 const { Sequelize, QueryTypes } = require('sequelize');
 const Op = Sequelize.Op;
+const { fn, col, literal } = require('sequelize');
 const db = require('../models/index');
 
 
@@ -18,6 +19,8 @@ module.exports = {
     getWeatherDataFromDate: getWeatherDataFromDate,
     getSearchByLocation: getSearchByLocation,
     getAlartsByDate: getAlartsByDate,
+    getDashboardAlarts: getDashboardAlarts,
+    getDashboardWeatherDataRequests: getDashboardWeatherDataRequests,
 };
 
 function create(modal, data) {
@@ -241,6 +244,56 @@ async function getWeatherDataFromDate(modal, locationId, startDate) {
          order: [['todate', 'DESC']],
       });
       return results;
+    } catch (error) {
+      console.error('Error fetching weather alarts data:', error);
+      throw error;
+    }
+  }
+
+  
+  async function getDashboardAlarts(modal, year) {
+    try {
+        const currentYear = year;
+
+        const alerts = await modal.findAll({
+          attributes: [
+            [Sequelize.fn('MONTH', col('todate')), 'month'],
+            [Sequelize.fn('COUNT', '*'), 'count']
+          ],
+          where: Sequelize.where(Sequelize.fn('YEAR', col('todate')), currentYear),
+          group: [literal('month')],
+          order: [[literal('month'), 'ASC']]
+        });
+    
+        return alerts.map(alert => ({
+          month: parseInt(alert.get('month'), 10),
+          count: parseInt(alert.get('count'), 10)
+        }));
+    } catch (error) {
+      console.error('Error fetching weather alarts data:', error);
+      throw error;
+    }
+  }
+
+
+  async function getDashboardWeatherDataRequests(modal, year) {
+    try {
+        const currentYear = year;
+
+        const alerts = await modal.findAll({
+          attributes: [
+            [Sequelize.fn('MONTH', col('createdAt')), 'month'],
+            [Sequelize.fn('COUNT', '*'), 'count']
+          ],
+          where: Sequelize.where(Sequelize.fn('YEAR', col('createdAt')), currentYear),
+          group: [literal('month')],
+          order: [[literal('month'), 'ASC']]
+        });
+    
+        return alerts.map(alert => ({
+          month: parseInt(alert.get('month'), 10),
+          count: parseInt(alert.get('count'), 10)
+        }));
     } catch (error) {
       console.error('Error fetching weather alarts data:', error);
       throw error;

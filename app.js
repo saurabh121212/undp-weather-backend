@@ -40,6 +40,7 @@ const ReportIncidentRouter = require('./routers/report-incident.js');
 const WeatherDataRequestsRouter = require('./routers/weather-data-requests.js');
 const UserRouter = require('./routers/user.js');
 const WeatherDetailsRouter = require('./routers/weather-details.js');
+const DashboardRouter = require('./routers/dashboard.js');
 
 
 app.use('/api/admin', AdminRouter);
@@ -56,6 +57,7 @@ app.use('/api/report-incident', ReportIncidentRouter);
 app.use('/api/weather-data-requests', WeatherDataRequestsRouter);
 app.use('/api/user', UserRouter);
 app.use('/api/weather-details', WeatherDetailsRouter);
+app.use('/api/dashboard', DashboardRouter);
 
 const db = require('./db/database.js')(eventEmitter);
 eventEmitter.once('db-connection-established', () => {
