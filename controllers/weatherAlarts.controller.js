@@ -54,6 +54,37 @@ module.exports.get = async (req, res, next) => {
 }
 
 
+module.exports.getAlartsByDate = async (req, res, next) => {
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+    const todayDate = req.params.todayDate;
+
+    const params = {
+      searchParams: {},
+      limit: limit,
+      offset: offset,
+      page: page,
+      order:[["id","DESC"]],
+  }
+
+  try {
+    const WeatherAlarts = await BaseRepo.getAlartsByDate(WeatherAlartsModel, todayDate);
+    if(!WeatherAlarts){
+        return res.status(400).json({error: 'Error fetching Weather Alarts'});
+    }
+    res.status(201).json(WeatherAlarts);
+    } 
+    catch (error) {
+    console.error(error);
+    return res.status(500).json({error: 'Internal server error'});
+    }
+}
+
+
+
+
 module.exports.update = async (req, res, next) => {
 
     const error = validationResult(req);

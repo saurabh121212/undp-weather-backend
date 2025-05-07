@@ -31,8 +31,11 @@ router.put('/update/:id',[
     body('short_description').isLength({min: 3}).withMessage('Short description must be at least 3 characters long'),
 ] ,authMiddleware.authAdmin, weatherAlartsController.update);
 
-// This is used in Mobile app to get the list of FAQs
+// This is used in Mobile app to get the list of Alarts
 router.get('/list', weatherAlartsController.get);
+
+// This is used in Mobile app to get the list of Alarts by the date
+router.get('/alarts_by_date/:todayDate', weatherAlartsController.getAlartsByDate);
 
 router.put('/delete/:id',authMiddleware.authAdmin, weatherAlartsController.delete);
 

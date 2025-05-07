@@ -17,6 +17,7 @@ module.exports = {
     baseFindByform_code: findByform_code,
     getWeatherDataFromDate: getWeatherDataFromDate,
     getSearchByLocation: getSearchByLocation,
+    getAlartsByDate: getAlartsByDate,
 };
 
 function create(modal, data) {
@@ -218,6 +219,30 @@ async function getWeatherDataFromDate(modal, locationId, startDate) {
       return results;
     } catch (error) {
       console.error('Error fetching weather data:', error);
+      throw error;
+    }
+  }
+
+
+
+
+
+  async function getAlartsByDate(modal, todayDate) {
+    try {
+      const results = await modal.findAll({
+        where: {
+            todate: {
+              [Op.lte]: todayDate
+            },
+            fromdate: {
+              [Op.gte]: todayDate
+            }
+          },
+         order: [['todate', 'DESC']],
+      });
+      return results;
+    } catch (error) {
+      console.error('Error fetching weather alarts data:', error);
       throw error;
     }
   }
