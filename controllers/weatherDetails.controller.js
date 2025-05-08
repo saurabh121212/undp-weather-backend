@@ -5,26 +5,58 @@ const { validationResult } = require('express-validator');
 
 module.exports.add = async (req, res, next) => {
 
-    const error = validationResult(req);
-    if (!error.isEmpty()) {
-        return res.status(400).json({ error: error.array() });
-    }
-
-    const payload = req.body;
-
-    console.log(payload);
-
+    const weatherData = req.body; // Expecting an array of objects
     try {
-        const WeatherDetails = await BaseRepo.baseBulkCreate(WeatherDetailModel, payload);
-        if (!WeatherDetails) {
-            return res.status(400).json({ error: 'Error creating Weather Details Request' });
+      for (const item of weatherData) {
+        // Remove id if it's 0 or undefined (let DB auto-generate it)
+        if (!item.id || item.id === 0) {
+          const { id, ...newData } = item;
+          await BaseRepo.baseCreate(WeatherDetailModel, newData)
+        } else {
+        //   const existing = await WeatherForecast.findByPk(item.id);
+          const existing = await BaseRepo.baseFindById(WeatherDetailModel, item.id, 'id')
+          if (existing) {
+            // Update existing record
+            // await WeatherForecast.update(item, {
+            //   where: { id: item.id }
+            // });
+            const id = item.id;
+            await BaseRepo.baseUpdate(WeatherDetailModel, {id}, item);
+          } 
+        //   else {
+        //     // Create new record with given ID
+        //     await WeatherForecast.create(item);
+        //   }
         }
-        res.status(201).json(WeatherDetails);
+      }
+      res.status(200).json({ message: "Weather data processed successfully." });
+    } catch (error) {
+      console.error("Error processing weather data:", error);
+      res.status(500).json({ error: "Internal server error" });
     }
-    catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: 'Internal server error' });
-    }
+
+
+
+    // const error = validationResult(req);
+    // if (!error.isEmpty()) {
+    //     return res.status(400).json({ error: error.array() });
+    // }
+
+    // const payload = req.body;
+
+    // console.log(payload);
+
+    // try {
+    //     const WeatherDetails = await BaseRepo.baseBulkCreate(WeatherDetailModel, payload);
+    //     if (!WeatherDetails) {
+    //         return res.status(400).json({ error: 'Error creating Weather Details Request' });
+    //     }
+    //     res.status(201).json(WeatherDetails);
+    // }
+    // catch (error) {
+    //     console.error(error);
+    //     return res.status(500).json({ error: 'Internal server error' });
+    // }
 }
 
 

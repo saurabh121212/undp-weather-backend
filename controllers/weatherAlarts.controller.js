@@ -1,6 +1,7 @@
 const BaseRepo = require('../services/BaseRepository');
 const { WeatherAlartsModel } = require('../models');
 const {validationResult} = require('express-validator');
+const sendNotification = require('../firebase/sendNotification');
 
 
 module.exports.add = async (req, res, next) => {
@@ -18,6 +19,11 @@ module.exports.add = async (req, res, next) => {
     if(!WeatherAlarts){
         return res.status(400).json({error: 'Error creating Weather Alarts'});
     }
+
+    // Add send firebase notification code here\
+    const token = '<device-fcm-token>';
+    sendNotification(token, 'Test Title', 'Hello, this is a free Firebase notification!');
+
     res.status(201).json(WeatherAlarts);
 } 
     catch (error) {
