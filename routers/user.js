@@ -49,6 +49,9 @@ router.get('/profile/:id',userController.getProfile);
 
 router.post('/send_otp', userController.sendOTP);
 
+router.post('/send_otp_forget_password', userController.sendOTPForgetPassword);
+
+
 router.put('/forget_password/:email',[
     body('password').isLength({min: 5}).withMessage('Password must be at least 5 characters long'),
 ],userController.forgetPassword);

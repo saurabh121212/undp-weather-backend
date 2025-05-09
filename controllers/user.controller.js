@@ -69,6 +69,37 @@ module.exports.sendOTP = async (req, res, next) => {
 
 
 
+
+module.exports.sendOTPForgetPassword = async (req, res, next) => {
+
+    const error = validationResult(req);
+    if(!error.isEmpty()){
+        return res.status(400).json({error: error.array()});
+    }
+
+    const {phone, email, otp} = req.body;
+    
+    try{
+
+    const isEmailExist = await UserModel.findOne({ where: { email }});
+    if(isEmailExist){
+     sendEmail(otp,1,email);
+     res.status(201).json({message: 'OTP sent successfully to your email'});
+    }
+
+    // write send otp code here on email Id
+    res.status(201).json({message: 'Invalid Email ID'});
+}
+    catch(err){
+        console.log(err);
+        return res.status(500).json({error: 'Internal server error'});
+    }
+}
+
+
+
+
+
 module.exports.ragisterUser = async (req, res, next) => {
 
     const error = validationResult(req);
