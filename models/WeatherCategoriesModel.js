@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(600),
             allowNull: false,
         },
+        night_icon_url: {
+            type: DataTypes.STRING(600),
+            allowNull: false,
+        },
         create_time: {
             type: DataTypes.DATE,
             allowNull: true

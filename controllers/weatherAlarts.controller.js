@@ -1,34 +1,34 @@
 const BaseRepo = require('../services/BaseRepository');
 const { WeatherAlartsModel } = require('../models');
-const {validationResult} = require('express-validator');
+const { validationResult } = require('express-validator');
 const sendNotification = require('../firebase/sendNotification');
 
 
 module.exports.add = async (req, res, next) => {
 
     const error = validationResult(req);
-    if(!error.isEmpty()){
-        return res.status(400).json({error: error.array()});
+    if (!error.isEmpty()) {
+        return res.status(400).json({ error: error.array() });
     }
 
     const payload = req.body;
 
 
-    try { 
-    const WeatherAlarts = await BaseRepo.baseCreate(WeatherAlartsModel, payload);
-    if(!WeatherAlarts){
-        return res.status(400).json({error: 'Error creating Weather Alarts'});
+    try {
+        const WeatherAlarts = await BaseRepo.baseCreate(WeatherAlartsModel, payload);
+        if (!WeatherAlarts) {
+            return res.status(400).json({ error: 'Error creating Weather Alarts' });
+        }
+
+        // Add send firebase notification code here\
+        const token = 'ciMLXm5ST1-Wx97NelZe2G:APA91bFeX9dzgAZtK3zqMAEwCia58MtLHeAPR9lAKmtO72QbxyYBJ8G59ar3fD-0lconmfHBQNndp0EYZVqQwXToiAShP8aVD4SOQB1CwNrCp5cGmXw1Tzg';
+        sendNotification(token, 'Test Title', 'Hello, this is a free Firebase notification!');
+
+        res.status(201).json(WeatherAlarts);
     }
-
-    // Add send firebase notification code here\
-    const token = '<device-fcm-token>';
-    sendNotification(token, 'Test Title', 'Hello, this is a free Firebase notification!');
-
-    res.status(201).json(WeatherAlarts);
-} 
     catch (error) {
-    console.log(error);
-    return res.status(500).json({error: 'Internal server error'});
+        console.log(error);
+        return res.status(500).json({ error: 'Internal server error' });
     }
 }
 
@@ -40,22 +40,22 @@ module.exports.get = async (req, res, next) => {
     const offset = (page - 1) * limit;
 
     const params = {
-      searchParams: {},
-      limit: limit,
-      offset: offset,
-      page: page,
-      order:[["id","DESC"]],
-  }
-  try {
-    const WeatherAlarts = await BaseRepo.baseList(WeatherAlartsModel, params);
-    if(!WeatherAlarts){
-        return res.status(400).json({error: 'Error fetching Weather Alarts'});
+        searchParams: {},
+        limit: limit,
+        offset: offset,
+        page: page,
+        order: [["id", "DESC"]],
     }
-    res.status(201).json(WeatherAlarts);
-    } 
+    try {
+        const WeatherAlarts = await BaseRepo.baseList(WeatherAlartsModel, params);
+        if (!WeatherAlarts) {
+            return res.status(400).json({ error: 'Error fetching Weather Alarts' });
+        }
+        res.status(201).json(WeatherAlarts);
+    }
     catch (error) {
-    console.error(error);
-    return res.status(500).json({error: 'Internal server error'});
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
     }
 }
 
@@ -68,23 +68,23 @@ module.exports.getAlartsByDate = async (req, res, next) => {
     const todayDate = req.params.todayDate;
 
     const params = {
-      searchParams: {},
-      limit: limit,
-      offset: offset,
-      page: page,
-      order:[["id","DESC"]],
-  }
-
-  try {
-    const WeatherAlarts = await BaseRepo.getAlartsByDate(WeatherAlartsModel, todayDate);
-    if(!WeatherAlarts){
-        return res.status(400).json({error: 'Error fetching Weather Alarts'});
+        searchParams: {},
+        limit: limit,
+        offset: offset,
+        page: page,
+        order: [["id", "DESC"]],
     }
-    res.status(201).json(WeatherAlarts);
-    } 
+
+    try {
+        const WeatherAlarts = await BaseRepo.getAlartsByDate(WeatherAlartsModel, todayDate);
+        if (!WeatherAlarts) {
+            return res.status(400).json({ error: 'Error fetching Weather Alarts' });
+        }
+        res.status(201).json(WeatherAlarts);
+    }
     catch (error) {
-    console.error(error);
-    return res.status(500).json({error: 'Internal server error'});
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
     }
 }
 
@@ -94,26 +94,26 @@ module.exports.getAlartsByDate = async (req, res, next) => {
 module.exports.update = async (req, res, next) => {
 
     const error = validationResult(req);
-    if(!error.isEmpty()){
-        return res.status(400).json({error: error.array()});
+    if (!error.isEmpty()) {
+        return res.status(400).json({ error: error.array() });
     }
 
     const payload = req.body;
     const id = req.params.id;
 
     try {
-    const WeatherAlarts = await BaseRepo.baseUpdate(WeatherAlartsModel, {id}, payload);
-    if(!WeatherAlarts){
-        return res.status(400).json({error: 'Error updating Weather Alarts'});
+        const WeatherAlarts = await BaseRepo.baseUpdate(WeatherAlartsModel, { id }, payload);
+        if (!WeatherAlarts) {
+            return res.status(400).json({ error: 'Error updating Weather Alarts' });
+        }
+        res.status(201).json({
+            message: 'Risk and Weather Alarts updated successfully',
+            data: WeatherAlarts
+        });
     }
-    res.status(201).json({
-        message: 'Risk and Weather Alarts updated successfully',
-        data: WeatherAlarts
-    });
-    } 
     catch (error) {
-    console.error(error);
-    return res.status(500).json({error: 'Internal server error'});
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
     }
 }
 
@@ -123,17 +123,17 @@ module.exports.delete = async (req, res, next) => {
     const id = req.params.id;
 
     try {
-    const WeatherAlarts = await BaseRepo.baseDelete(WeatherAlartsModel, {id});
-    if(!WeatherAlarts){
-        return res.status(400).json({error: 'Error deleting Weather Alarts'});
+        const WeatherAlarts = await BaseRepo.baseDelete(WeatherAlartsModel, { id });
+        if (!WeatherAlarts) {
+            return res.status(400).json({ error: 'Error deleting Weather Alarts' });
+        }
+        res.status(201).json({
+            message: 'Weather Alarts deleted successfully',
+            data: WeatherAlarts
+        });
     }
-    res.status(201).json({
-        message: 'Weather Alarts deleted successfully',
-        data: WeatherAlarts
-    });
-    } 
     catch (error) {
-    console.error(error);
-    return res.status(500).json({error: 'Internal server error'});
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
     }
 }
