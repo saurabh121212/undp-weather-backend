@@ -83,7 +83,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         night_icon_url: {
             type: DataTypes.STRING(600),
-            allowNull: false,
+            allowNull: true,
         },
         
     }, {
