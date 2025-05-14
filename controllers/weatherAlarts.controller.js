@@ -1,7 +1,9 @@
 const BaseRepo = require('../services/BaseRepository');
-const { WeatherAlartsModel } = require('../models');
+const { WeatherAlartsModel, UserModel } = require('../models');
 const { validationResult } = require('express-validator');
 const sendNotification = require('../firebase/sendNotification');
+const admin = require('firebase-admin');
+
 
 
 module.exports.add = async (req, res, next) => {
@@ -12,18 +14,15 @@ module.exports.add = async (req, res, next) => {
     }
 
     const payload = req.body;
-
-
     try {
         const WeatherAlarts = await BaseRepo.baseCreate(WeatherAlartsModel, payload);
         if (!WeatherAlarts) {
             return res.status(400).json({ error: 'Error creating Weather Alarts' });
         }
 
-        // Add send firebase notification code here\
-        const token = 'ciMLXm5ST1-Wx97NelZe2G:APA91bFeX9dzgAZtK3zqMAEwCia58MtLHeAPR9lAKmtO72QbxyYBJ8G59ar3fD-0lconmfHBQNndp0EYZVqQwXToiAShP8aVD4SOQB1CwNrCp5cGmXw1Tzg';
-        sendNotification(token, 'Test Title', 'Hello, this is a free Firebase notification!');
 
+        // Send notification to all users
+        sendNotificationToAllUsers(payload.name, payload.short_description);
         res.status(201).json(WeatherAlarts);
     }
     catch (error) {
@@ -136,4 +135,51 @@ module.exports.delete = async (req, res, next) => {
         console.error(error);
         return res.status(500).json({ error: 'Internal server error' });
     }
+}
+
+
+
+
+// This is used to send the notification
+
+// Split an array into chunks
+function chunkArray(array, size) {
+  const result = [];
+  for (let i = 0; i < array.length; i += size) {
+    result.push(array.slice(i, i + size));
+  }
+  return result;
+}
+
+async function sendNotificationToAllUsers(name, description) {
+  try {
+    const users = await BaseRepo.findToken_User(UserModel);
+    const allTokens = users.map(user => user.divice_token).filter(Boolean);
+
+    console.info(`📦 Found ${allTokens.length} valid FCM tokens`);
+
+    const tokenChunks = chunkArray(allTokens, 500); // Firebase limit
+
+    for (let i = 0; i < tokenChunks.length; i++) {
+      const tokens = tokenChunks[i];
+      const message = {
+        notification: {
+          title: name,
+          body: description,
+        },
+        tokens,
+      };
+
+      try {
+        console.info(`🚀 Sending batch ${i + 1}/${tokenChunks.length}`);
+        await sendNotification(message);
+      } catch (batchError) {
+        console.error(`❌ Error in batch ${i + 1}:`, batchError.message);
+      }
+    }
+
+    console.info('✅ All notifications sent');
+  } catch (err) {
+    console.error('❌ Failed to send notifications:', err.message);
+  }
 }

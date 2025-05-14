@@ -21,6 +21,7 @@ module.exports = {
     getAlartsByDate: getAlartsByDate,
     getDashboardAlarts: getDashboardAlarts,
     getDashboardWeatherDataRequests: getDashboardWeatherDataRequests,
+    findToken_User:findToken_User
 };
 
 function create(modal, data) {
@@ -59,6 +60,20 @@ function findByform_code(modal, params) {
         }
     });
 }
+
+function findToken_User(modal) {
+    return  modal.findAll({
+      attributes: ['divice_token'],
+      where: {
+        divice_token: {
+          [Sequelize.Op.ne]: null,
+        },
+      },
+    });
+}
+
+
+
 
 function detail(modal, params) {
     const query = {
