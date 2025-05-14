@@ -33,6 +33,14 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE,
             allowNull: false, // or false if required
         },
+        to_time: {
+            type: DataTypes.STRING(200),
+            allowNull: false, // or false if required
+        },
+        from_time: {
+            type: DataTypes.STRING(200),
+            allowNull: false, // or false if required
+        },
         disasterType: {
             type: DataTypes.STRING(200),
             allowNull: false, // or false if required

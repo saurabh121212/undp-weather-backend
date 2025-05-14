@@ -5,312 +5,343 @@ const db = require('../models/index');
 
 
 module.exports = {
-    baseCreate: create,
-    baseBulkCreate: bulkCreate,
-    baseDetail: detail,
-    baseList: list,
-    baseUpdate: update,
-    baseDelete: deleteEntry,
-    baseRestore: baseRestore,
-    baseCount: count,
-    baseFindById: findById,
-    baseGalleryList: GalleryList,
-    baseFindByform_code: findByform_code,
-    getWeatherDataFromDate: getWeatherDataFromDate,
-    getSearchByLocation: getSearchByLocation,
-    getAlartsByDate: getAlartsByDate,
-    getDashboardAlarts: getDashboardAlarts,
-    getDashboardWeatherDataRequests: getDashboardWeatherDataRequests,
-    findToken_User:findToken_User
+  baseCreate: create,
+  baseBulkCreate: bulkCreate,
+  baseDetail: detail,
+  baseList: list,
+  baseUpdate: update,
+  baseDelete: deleteEntry,
+  baseRestore: baseRestore,
+  baseCount: count,
+  baseFindById: findById,
+  baseGalleryList: GalleryList,
+  baseFindByform_code: findByform_code,
+  getWeatherDataFromDate: getWeatherDataFromDate,
+  getSearchByLocation: getSearchByLocation,
+  getAlartsByDate: getAlartsByDate,
+  getDashboardAlarts: getDashboardAlarts,
+  getDashboardWeatherDataRequests: getDashboardWeatherDataRequests,
+  findToken_User: findToken_User,
+  getDashboardAlartsType: getDashboardAlartsType,
 };
 
 function create(modal, data) {
-    return modal.create(data);
+  return modal.create(data);
 }
 
 function bulkCreate(modal, data) {
-    return modal.bulkCreate(data, { returning: true });
+  return modal.bulkCreate(data, { returning: true });
 }
 
 function count(modal, searchParams) {
-    return modal.count({ where: searchParams });
+  return modal.count({ where: searchParams });
 }
 
 
 function findById(modal, params, key) {
-    return modal.findOne({
-        where: {
-            [key]: params
-        }
-    });
+  return modal.findOne({
+    where: {
+      [key]: params
+    }
+  });
 }
 
 function findBypatient_code(modal, params) {
-    return modal.findOne({
-        where: {
-            patient_code: params
-        }
-    });
+  return modal.findOne({
+    where: {
+      patient_code: params
+    }
+  });
 }
 
 function findByform_code(modal, params) {
-    return modal.findOne({
-        where: {
-            form_code: params
-        }
-    });
+  return modal.findOne({
+    where: {
+      form_code: params
+    }
+  });
 }
 
 function findToken_User(modal) {
-    return  modal.findAll({
-      attributes: ['divice_token'],
-      where: {
-        divice_token: {
-          [Sequelize.Op.ne]: null,
-        },
+  return modal.findAll({
+    attributes: ['divice_token'],
+    where: {
+      divice_token: {
+        [Sequelize.Op.ne]: null,
       },
-    });
+    },
+  });
 }
 
 
 
 
 function detail(modal, params) {
-    const query = {
-        where: params.searchParams
-    };
-    if (params.hasOwnProperty('attributes')) {
-        query['attributes'] = params.attributes;
-    }
-    if (params.hasOwnProperty('include')) {
-        query['include'] = params.include;
-    }
-    if (params.hasOwnProperty('paranoid')) {
-        query['paranoid'] = params.paranoid;
-    }
-    if (params.hasOwnProperty('order')) {
-        query['order'] = params.order;
-    }
+  const query = {
+    where: params.searchParams
+  };
+  if (params.hasOwnProperty('attributes')) {
+    query['attributes'] = params.attributes;
+  }
+  if (params.hasOwnProperty('include')) {
+    query['include'] = params.include;
+  }
+  if (params.hasOwnProperty('paranoid')) {
+    query['paranoid'] = params.paranoid;
+  }
+  if (params.hasOwnProperty('order')) {
+    query['order'] = params.order;
+  }
 
-    return modal.findOne(query);
+  return modal.findOne(query);
 }
 
 
 function GalleryList(modal, params) {
-    const query = {
-        where: params.searchParams
-    };
-    if (params.hasOwnProperty('attributes')) {
-        query['attributes'] = params.attributes;
-    }
-    if (params.hasOwnProperty('order')) {
-        query['order'] = params.order;
-    }
-    if (params.hasOwnProperty('distinct')) {
-        query['distinct'] = params.distinct;
-    }
-    if (params.hasOwnProperty('group')) {
-        query['group'] = params.group;
-    }
-    return modal.findAll(query);
+  const query = {
+    where: params.searchParams
+  };
+  if (params.hasOwnProperty('attributes')) {
+    query['attributes'] = params.attributes;
+  }
+  if (params.hasOwnProperty('order')) {
+    query['order'] = params.order;
+  }
+  if (params.hasOwnProperty('distinct')) {
+    query['distinct'] = params.distinct;
+  }
+  if (params.hasOwnProperty('group')) {
+    query['group'] = params.group;
+  }
+  return modal.findAll(query);
 }
 
 
 async function list(modal, params) {
-    let withPagination = false;
+  let withPagination = false;
 
-    const query = {
-        where: params.searchParams || params.where || {}
-    };
+  const query = {
+    where: params.searchParams || params.where || {}
+  };
 
-    if (params.hasOwnProperty('attributes')) {
-        query['attributes'] = params.attributes;
-    }
-    if (params.hasOwnProperty('include')) {
-        query['include'] = params.include;
-        // distinct is true because paginator count include as row
-        query['distinct'] = true;
-    }
-    if (params.hasOwnProperty('order')) {
-        query['order'] = params.order;
-    }
-    if (params.hasOwnProperty('limit')) {
-        query['limit'] = params.limit;
-        withPagination = true;
-    }
-    if (params.hasOwnProperty('paranoid')) {
-        query['paranoid'] = params.paranoid;
-    }
-    if (params.hasOwnProperty('offset')) {
-        query['offset'] = params.offset;
-    }
-    if (params.hasOwnProperty('isRaw')) {
-        query['raw'] = params.isRaw;
-    }
-    if (params.hasOwnProperty('distinct')) {
-        query['distinct'] = params.distinct;
-    }
-    if (params.hasOwnProperty('group')) {
-        query['group'] = params.group;
-    }
-    if (params.hasOwnProperty('having')) {
-        query['having'] = params.having;
-    }
-    if (withPagination) {
+  if (params.hasOwnProperty('attributes')) {
+    query['attributes'] = params.attributes;
+  }
+  if (params.hasOwnProperty('include')) {
+    query['include'] = params.include;
+    // distinct is true because paginator count include as row
+    query['distinct'] = true;
+  }
+  if (params.hasOwnProperty('order')) {
+    query['order'] = params.order;
+  }
+  if (params.hasOwnProperty('limit')) {
+    query['limit'] = params.limit;
+    withPagination = true;
+  }
+  if (params.hasOwnProperty('paranoid')) {
+    query['paranoid'] = params.paranoid;
+  }
+  if (params.hasOwnProperty('offset')) {
+    query['offset'] = params.offset;
+  }
+  if (params.hasOwnProperty('isRaw')) {
+    query['raw'] = params.isRaw;
+  }
+  if (params.hasOwnProperty('distinct')) {
+    query['distinct'] = params.distinct;
+  }
+  if (params.hasOwnProperty('group')) {
+    query['group'] = params.group;
+  }
+  if (params.hasOwnProperty('having')) {
+    query['having'] = params.having;
+  }
+  if (withPagination) {
 
-        const data = await modal.findAndCountAll(query);
-        const total = data.count;
-        const totalPages = Math.ceil(total / params.limit);
-        
-        return {
-            values: data,
-            page: params.page,
-            limit: params.limit,
-            total_pages: totalPages,
-            total: total
-        }
+    const data = await modal.findAndCountAll(query);
+    const total = data.count;
+    const totalPages = Math.ceil(total / params.limit);
+
+    return {
+      values: data,
+      page: params.page,
+      limit: params.limit,
+      total_pages: totalPages,
+      total: total
     }
+  }
 }
 
 function update(modal, params, data) {
-    let queryParams = {};
-    if (params.hasOwnProperty('searchParams')) {
-        queryParams = { where: params.searchParams };
-    } else {
-        queryParams = { where: params };
-    }
-    if (params.hasOwnProperty('limit')) {
-        queryParams['limit'] = params.limit;
-    }
-    if (params.hasOwnProperty('paranoid')) {
-        queryParams['paranoid'] = params.paranoid;
-    }
-    console.log("params ==> ", queryParams);
-    return modal.update(data, queryParams);
+  let queryParams = {};
+  if (params.hasOwnProperty('searchParams')) {
+    queryParams = { where: params.searchParams };
+  } else {
+    queryParams = { where: params };
+  }
+  if (params.hasOwnProperty('limit')) {
+    queryParams['limit'] = params.limit;
+  }
+  if (params.hasOwnProperty('paranoid')) {
+    queryParams['paranoid'] = params.paranoid;
+  }
+  console.log("params ==> ", queryParams);
+  return modal.update(data, queryParams);
 }
 
 
 
 function deleteEntry(modal, searchParams) {
-    return modal.destroy({ where: searchParams });
+  return modal.destroy({ where: searchParams });
 }
 
 function baseRestore(modal, searchParams) {
-    return modal.restore({ where: searchParams });
+  return modal.restore({ where: searchParams });
 }
 
 
 async function getWeatherDataFromDate(modal, locationId, startDate) {
-    try {
-      const results = await modal.findAll({
-        where: {
-          deletedAt: null,
-          location_id: locationId,
-          date: {
-            [Op.gte]: startDate
-          }
+  try {
+    const results = await modal.findAll({
+      where: {
+        deletedAt: null,
+        location_id: locationId,
+        date: {
+          [Op.gte]: startDate
+        }
+      },
+      // order: [['id', 'DESC']],
+    });
+
+    return results;
+  } catch (error) {
+    console.error('Error fetching weather data:', error);
+    throw error;
+  }
+}
+
+
+
+async function getSearchByLocation(modal, location_name, startDate) {
+  try {
+    const results = await modal.findAll({
+      where: {
+        deletedAt: null,
+        date: startDate,
+        location_name: {
+          [Op.like]: location_name + '%', // e.g., 'Ro%' or '%Ro%'
+        }
+      },
+      // order: [['id', 'DESC']],
+    });
+    return results;
+  } catch (error) {
+    console.error('Error fetching weather data:', error);
+    throw error;
+  }
+}
+
+
+
+
+
+async function getAlartsByDate(modal, todayDate) {
+  try {
+    const results = await modal.findAll({
+      where: {
+        todate: {
+          [Op.lte]: todayDate
         },
-        // order: [['id', 'DESC']],
-      });
-  
-      return results;
-    } catch (error) {
-      console.error('Error fetching weather data:', error);
-      throw error;
-    }
+        fromdate: {
+          [Op.gte]: todayDate
+        }
+      },
+      order: [['todate', 'DESC']],
+    });
+    return results;
+  } catch (error) {
+    console.error('Error fetching weather alarts data:', error);
+    throw error;
   }
+}
 
 
+async function getDashboardAlarts(modal, year) {
+  try {
+    const currentYear = year;
 
-  async function getSearchByLocation(modal, location_name, startDate) {
-    try {
-      const results = await modal.findAll({
-        where: {
-          deletedAt: null,
-          date: startDate,
-          location_name: {
-            [Op.like]: location_name+'%', // e.g., 'Ro%' or '%Ro%'
-          }
-        },
-        // order: [['id', 'DESC']],
-      });
-      return results;
-    } catch (error) {
-      console.error('Error fetching weather data:', error);
-      throw error;
-    }
+    const alerts = await modal.findAll({
+      attributes: [
+        [Sequelize.fn('MONTH', col('todate')), 'month'],
+        [Sequelize.fn('COUNT', '*'), 'count']
+      ],
+      where: Sequelize.where(Sequelize.fn('YEAR', col('todate')), currentYear),
+      group: [literal('month')],
+      order: [[literal('month'), 'ASC']]
+    });
+
+    return alerts.map(alert => ({
+      month: parseInt(alert.get('month'), 10),
+      count: parseInt(alert.get('count'), 10)
+    }));
+  } catch (error) {
+    console.error('Error fetching weather alarts data:', error);
+    throw error;
   }
+}
 
 
+async function getDashboardWeatherDataRequests(modal, year) {
+  try {
+    const currentYear = year;
 
+    const alerts = await modal.findAll({
+      attributes: [
+        [Sequelize.fn('MONTH', col('createdAt')), 'month'],
+        [Sequelize.fn('COUNT', '*'), 'count']
+      ],
+      where: Sequelize.where(Sequelize.fn('YEAR', col('createdAt')), currentYear),
+      group: [literal('month')],
+      order: [[literal('month'), 'ASC']]
+    });
 
-
-  async function getAlartsByDate(modal, todayDate) {
-    try {
-      const results = await modal.findAll({
-        where: {
-            todate: {
-              [Op.lte]: todayDate
-            },
-            fromdate: {
-              [Op.gte]: todayDate
-            }
-          },
-         order: [['todate', 'DESC']],
-      });
-      return results;
-    } catch (error) {
-      console.error('Error fetching weather alarts data:', error);
-      throw error;
-    }
+    return alerts.map(alert => ({
+      month: parseInt(alert.get('month'), 10),
+      count: parseInt(alert.get('count'), 10)
+    }));
+  } catch (error) {
+    console.error('Error fetching weather alarts data:', error);
+    throw error;
   }
+}
 
-  
-  async function getDashboardAlarts(modal, year) {
-    try {
-        const currentYear = year;
 
-        const alerts = await modal.findAll({
-          attributes: [
-            [Sequelize.fn('MONTH', col('todate')), 'month'],
-            [Sequelize.fn('COUNT', '*'), 'count']
-          ],
-          where: Sequelize.where(Sequelize.fn('YEAR', col('todate')), currentYear),
-          group: [literal('month')],
-          order: [[literal('month'), 'ASC']]
-        });
-    
-        return alerts.map(alert => ({
-          month: parseInt(alert.get('month'), 10),
-          count: parseInt(alert.get('count'), 10)
-        }));
-    } catch (error) {
-      console.error('Error fetching weather alarts data:', error);
-      throw error;
-    }
+
+
+async function getDashboardAlartsType(modal, year) {
+  try {
+    const currentYear = year;
+
+    const alertsByType = await modal.findAll({
+      attributes: [
+        'disasterType',
+        [fn('COUNT', col('*')), 'alert_count']
+      ],
+      where: {
+        fromdate: {
+          [Op.gte]: new Date(`${currentYear}-01-01`),
+          [Op.lte]: new Date(`${currentYear}-12-31`)
+        }
+      },
+      group: ['disasterType'],
+      order: [[fn('COUNT', col('*')), 'DESC']] // optional: order by count
+    });
+
+    return alertsByType
+
+  } catch (error) {
+    console.error('Error fetching weather alarts data:', error);
+    throw error;
   }
-
-
-  async function getDashboardWeatherDataRequests(modal, year) {
-    try {
-        const currentYear = year;
-
-        const alerts = await modal.findAll({
-          attributes: [
-            [Sequelize.fn('MONTH', col('createdAt')), 'month'],
-            [Sequelize.fn('COUNT', '*'), 'count']
-          ],
-          where: Sequelize.where(Sequelize.fn('YEAR', col('createdAt')), currentYear),
-          group: [literal('month')],
-          order: [[literal('month'), 'ASC']]
-        });
-    
-        return alerts.map(alert => ({
-          month: parseInt(alert.get('month'), 10),
-          count: parseInt(alert.get('count'), 10)
-        }));
-    } catch (error) {
-      console.error('Error fetching weather alarts data:', error);
-      throw error;
-    }
-  }
+}

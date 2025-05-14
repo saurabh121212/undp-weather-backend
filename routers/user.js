@@ -11,6 +11,7 @@ router.post('/ragister',[
     body('email').isEmail().withMessage('Please enter a valid email'),
     body('location_id').notEmpty().withMessage('Location ID is required'),
     body('location_name').isLength({min: 3}).withMessage('Location Name must be at least 3 characters long'),
+    body('region').isLength({min: 3}).withMessage('Region must be at least 3 characters long'),
     body('address').isLength({min: 3}).withMessage('Address must be at least 3 characters long'),
     body('password').isLength({min: 5}).withMessage('Password must be at least 5 characters long'),
     body('divice_id').notEmpty().withMessage('divice_id is required'),

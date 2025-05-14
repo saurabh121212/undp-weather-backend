@@ -18,6 +18,8 @@ router.get('/weather_data_requests/:year',authMiddleware.authAdmin,dashboardCont
 
 router.get('/incidents_reported/:year',authMiddleware.authAdmin,dashboardController.getDashboardIncidentsReportedData);
 
+router.get('/alarts_type/:year',authMiddleware.authAdmin,dashboardController.getDashboardAlartsTypeData);
+
 
 // router.put('/delete/:id',authMiddleware.authAdmin, FAQsController.deleteFAQs);
 
