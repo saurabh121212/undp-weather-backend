@@ -162,7 +162,7 @@ module.exports.getDashboardAlartsTypeData = async (req, res, next) => {
     searchParams: {},
   }
   try {
-    const alarts = await BaseRepo.getDashboardWeatherDataRequests(WeatherAlartsModel, year);
+    const alarts = await BaseRepo.getDashboardAlartsType(WeatherAlartsModel, year);
 
     res.status(201).json({
       message: 'Dashboard Alarts Type fetched successfully',
@@ -189,7 +189,7 @@ module.exports.getDashboardUsersRegionWiseData = async (req, res, next) => {
     searchParams: {},
   }
   try {
-    const alarts = await BaseRepo.getDashboardWeatherDataRequests(UserModel, year);
+    const alarts = await BaseRepo.getDashboardUserRigionWise(UserModel, year);
 
     res.status(201).json({
       message: 'Dashboard User Data fetched successfully',

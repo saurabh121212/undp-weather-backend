@@ -352,7 +352,7 @@ async function getDashboardUserRigionWise(modal, year) {
   try {
     const currentYear = year;
 
-    const usersByRegion = await User.findAll({
+    const usersByRegion = await modal.findAll({
       attributes: [
         'region',
         [fn('COUNT', col('*')), 'user_count']
