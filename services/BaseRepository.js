@@ -23,6 +23,7 @@ module.exports = {
   getDashboardWeatherDataRequests: getDashboardWeatherDataRequests,
   findToken_User: findToken_User,
   getDashboardAlartsType: getDashboardAlartsType,
+  getDashboardUserRigionWise: getDashboardUserRigionWise,
 };
 
 function create(modal, data) {
@@ -340,6 +341,31 @@ async function getDashboardAlartsType(modal, year) {
 
     return alertsByType
 
+  } catch (error) {
+    console.error('Error fetching weather alarts data:', error);
+    throw error;
+  }
+}
+
+
+async function getDashboardUserRigionWise(modal, year) {
+  try {
+    const currentYear = year;
+
+    const usersByRegion = await User.findAll({
+      attributes: [
+        'region',
+        [fn('COUNT', col('*')), 'user_count']
+      ],
+      where: {
+        is_ragistered: true
+      },
+      group: ['region'],
+      order: [[fn('COUNT', col('*')), 'DESC']] // optional: sort by count
+    });
+
+    return usersByRegion
+    
   } catch (error) {
     console.error('Error fetching weather alarts data:', error);
     throw error;

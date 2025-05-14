@@ -20,6 +20,8 @@ router.get('/incidents_reported/:year',authMiddleware.authAdmin,dashboardControl
 
 router.get('/alarts_type/:year',authMiddleware.authAdmin,dashboardController.getDashboardAlartsTypeData);
 
+router.get('/users_region_wise/:year',authMiddleware.authAdmin,dashboardController.getDashboardUsersRegionWiseData);
+
 
 // router.put('/delete/:id',authMiddleware.authAdmin, FAQsController.deleteFAQs);
 
