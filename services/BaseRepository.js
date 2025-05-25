@@ -252,7 +252,7 @@ async function getAlartsByDate(modal, todayDate) {
     const results = await modal.findAll({
       where: {
         todate: {
-          [Op.lte]: todayDate
+          [Op.gte]: todayDate
         },
         // fromdate: {
         //   [Op.gte]: todayDate
