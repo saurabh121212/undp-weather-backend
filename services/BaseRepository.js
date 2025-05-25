@@ -254,9 +254,9 @@ async function getAlartsByDate(modal, todayDate) {
         todate: {
           [Op.lte]: todayDate
         },
-        fromdate: {
-          [Op.gte]: todayDate
-        }
+        // fromdate: {
+        //   [Op.gte]: todayDate
+        // }
       },
       order: [['todate', 'DESC']],
     });

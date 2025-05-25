@@ -52,8 +52,6 @@ module.exports.getFAQs = async (req, res, next) => {
     }
 }
 
-
-
 module.exports.updateFAQs = async (req, res, next) => {
 
     const error = validationResult(req);
