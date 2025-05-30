@@ -18,6 +18,7 @@ module.exports = {
   baseFindByform_code: findByform_code,
   getWeatherDataFromDate: getWeatherDataFromDate,
   getSearchByLocation: getSearchByLocation,
+  getallByLocation: getallByLocation,
   getAlartsByDate: getAlartsByDate,
   getDashboardAlarts: getDashboardAlarts,
   getDashboardWeatherDataRequests: getDashboardWeatherDataRequests,
@@ -244,20 +245,40 @@ async function getSearchByLocation(modal, location_name, startDate) {
 }
 
 
+async function getallByLocation(modal, location_name, startDate) {
+  try {
+    const results = await modal.findAll({
+      where: {
+        deletedAt: null,
+        date: startDate,
+      },
+      // order: [['id', 'DESC']],
+    });
+    return results;
+  } catch (error) {
+    console.error('Error fetching weather data:', error);
+    throw error;
+  }
+}
 
 
 
-async function getAlartsByDate(modal, todayDate) {
+
+
+async function getAlartsByDate(modal, todayDate ,RiskandResponseModel) {
   try {
     const results = await modal.findAll({
       where: {
         todate: {
           [Op.gte]: todayDate
         },
-        // fromdate: {
-        //   [Op.gte]: todayDate
-        // }
       },
+      include: [
+        {
+          model: RiskandResponseModel,
+          required: false // optional: still return alerts even if no risk is found
+        }
+      ],
       order: [['todate', 'DESC']],
     });
     return results;

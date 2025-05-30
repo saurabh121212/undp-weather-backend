@@ -156,3 +156,34 @@ module.exports.searchLocation = async (req, res, next) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 }
+
+
+
+module.exports.allLocation = async (req, res, next) => {
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+    const date = req.query.date || null;
+    const location_name = req.query.location_name || null;
+
+    const params = {
+        searchParams: {date},
+        limit: limit,
+        offset: offset,
+        page: page,
+        order: [["id", "DESC"]],
+    }
+    console.log(location_name," ", date);
+    try {
+        const WeatherDataRequest = await BaseRepo.getallByLocation(WeatherDetailModel,location_name, date);
+        if (!WeatherDataRequest) {
+            return res.status(400).json({ error: 'Error fetching Weather Data Request' });
+        }
+        res.status(201).json(WeatherDataRequest);
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}

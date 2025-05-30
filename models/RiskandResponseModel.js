@@ -1,6 +1,5 @@
-
 module.exports = (sequelize, DataTypes) => {
-    const Model = sequelize.define('RiskandResponseModel', {
+    const RiskandResponseModel = sequelize.define('RiskandResponseModel', {
         id: {
             type: DataTypes.BIGINT,
             allowNull: false,
@@ -35,5 +34,9 @@ module.exports = (sequelize, DataTypes) => {
         tableName: 'riskandresponses', // Optional: useful for clarity and pluralization control
     });
 
-    return Model;
+    RiskandResponseModel.associate = (models) => {
+    RiskandResponseModel.hasMany(models.WeatherAlartsModel, { foreignKey: 'risk_id' }); // just tell Sequelize
+  };
+  
+    return RiskandResponseModel;
 };

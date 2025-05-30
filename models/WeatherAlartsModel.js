@@ -1,7 +1,7 @@
 const { response } = require("express");
 
 module.exports = (sequelize, DataTypes) => {
-    const Model = sequelize.define('WeatherAlartsModel', {
+    const WeatherAlartsModel = sequelize.define('WeatherAlartsModel', {
         id: {
             type: DataTypes.BIGINT,
             allowNull: false,
@@ -41,6 +41,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(200),
             allowNull: false, // or false if required
         },
+
+        risk_id: {
+            type: DataTypes.BIGINT,
+        },
+
         disasterType: {
             type: DataTypes.STRING(200),
             allowNull: false, // or false if required
@@ -67,5 +72,12 @@ module.exports = (sequelize, DataTypes) => {
         tableName: 'weatheralarts', // Optional: useful for clarity and pluralization control
     });
 
-    return Model;
+      WeatherAlartsModel.associate = (models) => {
+      WeatherAlartsModel.belongsTo(models.RiskandResponseModel, {
+      foreignKey: 'risk_id', // tell Sequelize to link this way
+      targetKey: 'id'        // match with Risk.id
+    });
+  };
+
+    return WeatherAlartsModel;
 };

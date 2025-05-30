@@ -1,5 +1,5 @@
 const BaseRepo = require('../services/BaseRepository');
-const { WeatherAlartsModel, UserModel } = require('../models');
+const { WeatherAlartsModel, UserModel, RiskandResponseModel } = require('../models');
 const { validationResult } = require('express-validator');
 const sendNotification = require('../firebase/sendNotification');
 const admin = require('firebase-admin');
@@ -75,7 +75,7 @@ module.exports.getAlartsByDate = async (req, res, next) => {
     }
 
     try {
-        const WeatherAlarts = await BaseRepo.getAlartsByDate(WeatherAlartsModel, todayDate);
+        const WeatherAlarts = await BaseRepo.getAlartsByDate(WeatherAlartsModel, todayDate,RiskandResponseModel);
         if (!WeatherAlarts) {
             return res.status(400).json({ error: 'Error fetching Weather Alarts' });
         }
