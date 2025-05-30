@@ -46,7 +46,7 @@ module.exports.get = async (req, res, next) => {
         order: [["id", "DESC"]],
     }
     try {
-        const WeatherAlarts = await BaseRepo.baseList(WeatherAlartsModel, params);
+        const WeatherAlarts = await BaseRepo.baseList2(WeatherAlartsModel, params, RiskandResponseModel);
         if (!WeatherAlarts) {
             return res.status(400).json({ error: 'Error fetching Weather Alarts' });
         }

@@ -102,7 +102,7 @@ module.exports.ragisterUser = async (req, res, next) => {
         return res.status(400).json({error: error.array()});
     }
 
-    const {name,phone,email,location_id,location_name,region,address,password, divice_id, divice_type, divice_token,is_ragistered} = req.body;
+    const {name,phone,email,location_id,location_name,region,address,password, divice_id, divice_type, divice_token,is_ragistered,gender} = req.body;
 
     const hashedPassword = await UserModel.hashPassword(password.toString());
 
@@ -110,7 +110,7 @@ module.exports.ragisterUser = async (req, res, next) => {
     const isdiviceIdExist = await UserModel.findOne({ where: { divice_id }});
     if(isdiviceIdExist){
         // return res.status(400).json({error: 'Divice ID already exists'});
-            const user = await BaseRepo.baseUpdate(UserModel, {divice_id}, {name,phone,email,location_id,location_name,region,address,password:hashedPassword,is_ragistered});
+            const user = await BaseRepo.baseUpdate(UserModel, {divice_id}, {name,phone,email,location_id,location_name,region,address,password:hashedPassword,is_ragistered,gender});
             if(!user){
                 return res.status(400).json({error: 'User Not Ragistered'});
             }
@@ -139,6 +139,7 @@ module.exports.ragisterUser = async (req, res, next) => {
         divice_type:divice_type,
         divice_token:divice_token,
         is_ragistered:is_ragistered,
+        gender:gender
     });
 
     if(!user){

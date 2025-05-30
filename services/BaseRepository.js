@@ -9,6 +9,7 @@ module.exports = {
   baseBulkCreate: bulkCreate,
   baseDetail: detail,
   baseList: list,
+  baseList2:list2,
   baseUpdate: update,
   baseDelete: deleteEntry,
   baseRestore: baseRestore,
@@ -122,8 +123,9 @@ function GalleryList(modal, params) {
 async function list(modal, params) {
   let withPagination = false;
 
+
   const query = {
-    where: params.searchParams || params.where || {}
+    where: params.searchParams || params.where || {},
   };
 
   if (params.hasOwnProperty('attributes')) {
@@ -174,6 +176,76 @@ async function list(modal, params) {
     }
   }
 }
+
+
+
+async function list2(modal, params,modal2) {
+  let withPagination = false;
+
+
+  const query = {
+    where: params.searchParams || params.where || {},
+    include: [
+        {
+          model: modal2,
+          required: false // optional: include even if no match
+        }
+      ],
+  };
+
+  if (params.hasOwnProperty('attributes')) {
+    query['attributes'] = params.attributes;
+  }
+  if (params.hasOwnProperty('include')) {
+    query['include'] = params.include;
+    // distinct is true because paginator count include as row
+    query['distinct'] = true;
+  }
+  if (params.hasOwnProperty('order')) {
+    query['order'] = params.order;
+  }
+  if (params.hasOwnProperty('limit')) {
+    query['limit'] = params.limit;
+    withPagination = true;
+  }
+  if (params.hasOwnProperty('paranoid')) {
+    query['paranoid'] = params.paranoid;
+  }
+  if (params.hasOwnProperty('offset')) {
+    query['offset'] = params.offset;
+  }
+  if (params.hasOwnProperty('isRaw')) {
+    query['raw'] = params.isRaw;
+  }
+  if (params.hasOwnProperty('distinct')) {
+    query['distinct'] = params.distinct;
+  }
+  if (params.hasOwnProperty('group')) {
+    query['group'] = params.group;
+  }
+  if (params.hasOwnProperty('having')) {
+    query['having'] = params.having;
+  }
+  if (withPagination) {
+
+    const data = await modal.findAndCountAll(query);
+    const total = data.count;
+    const totalPages = Math.ceil(total / params.limit);
+
+    return {
+      values: data,
+      page: params.page,
+      limit: params.limit,
+      total_pages: totalPages,
+      total: total
+    }
+  }
+}
+
+
+
+
+
 
 function update(modal, params, data) {
   let queryParams = {};
