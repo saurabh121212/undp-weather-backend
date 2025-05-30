@@ -45,7 +45,13 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true, // or false if required
             minlength: [3, 'Location Name Must be at least 3 characters long'],
             maxlength: [200, 'Name Must be at most 200 characters long'],
+        },
 
+        gender: {
+            type: DataTypes.STRING(100),
+            allowNull: true, // or false if required
+            minlength: [3, 'Gender Name Must be at least 3 characters long'],
+            maxlength: [100, 'Gender Name Must be at most 200 characters long'],
         },
         
         region: {
