@@ -95,9 +95,6 @@ module.exports.sendOTPForgetPassword = async (req, res, next) => {
 }
 
 
-
-
-
 module.exports.ragisterUser = async (req, res, next) => {
 
     const error = validationResult(req);

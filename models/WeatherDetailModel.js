@@ -57,6 +57,22 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(50),
             allowNull: true, // or false if required
         },
+
+        night_description: {
+            type: DataTypes.STRING(600),
+            allowNull: true, // or false if required
+        },
+
+        night_weather_type: {
+            type: DataTypes.STRING(200),
+            allowNull: true, // or false if required
+        },
+
+        night_weather_icon: {
+            type: DataTypes.STRING(600),
+            allowNull: true, // or false if required
+        },
+
         precipitation: {
             type: DataTypes.STRING(200),
             allowNull: true, // or false if required
