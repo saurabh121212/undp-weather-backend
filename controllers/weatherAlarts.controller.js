@@ -65,6 +65,10 @@ module.exports.getAlartsByDate = async (req, res, next) => {
     const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
     const todayDate = req.params.todayDate;
+    const todayTime = req.params.todayTime;
+
+    console.log("Today Date:", todayDate);
+    console.log("Today Time:", todayTime);
 
     const params = {
         searchParams: {},
@@ -75,7 +79,7 @@ module.exports.getAlartsByDate = async (req, res, next) => {
     }
 
     try {
-        const WeatherAlarts = await BaseRepo.getAlartsByDate(WeatherAlartsModel, todayDate,RiskandResponseModel);
+        const WeatherAlarts = await BaseRepo.getAlartsByDate(WeatherAlartsModel,todayDate,RiskandResponseModel,todayTime);
         if (!WeatherAlarts) {
             return res.status(400).json({ error: 'Error fetching Weather Alarts' });
         }

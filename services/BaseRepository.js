@@ -337,12 +337,15 @@ async function getallByLocation(modal, location_name, startDate) {
 
 
 
-async function getAlartsByDate(modal, todayDate ,RiskandResponseModel) {
+async function getAlartsByDate(modal, todayDate ,RiskandResponseModel,todayTime) {
   try {
     const results = await modal.findAll({
       where: {
         todate: {
           [Op.gte]: todayDate
+        },
+        to_time: {
+          [Op.gte]: todayTime // Ensure from_time is not null
         },
       },
       include: [

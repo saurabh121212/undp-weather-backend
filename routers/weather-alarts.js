@@ -35,7 +35,7 @@ router.put('/update/:id',[
 router.get('/list', weatherAlartsController.get);
 
 // This is used in Mobile app to get the list of Alarts by the date
-router.get('/alarts_by_date/:todayDate', weatherAlartsController.getAlartsByDate);
+router.get('/alarts_by_date/:todayDate/:todayTime', weatherAlartsController.getAlartsByDate);
 
 router.put('/delete/:id',authMiddleware.authAdmin, weatherAlartsController.delete);
 
