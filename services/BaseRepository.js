@@ -368,22 +368,24 @@ async function getAlartsByDateOld(modal, todayDate, RiskandResponseModel, todayT
 async function getAlartsByDate(modal, todayDate, RiskandResponseModel, todayTime) {
   try {
     const currentDateTime = new Date(`${todayDate}T${todayTime}`);
-
     const results = await modal.findAll({
-      where: Sequelize.where(
-        Sequelize.fn(
-          'STR_TO_DATE',
-          Sequelize.fn('CONCAT', Sequelize.col('todate'), ' ', Sequelize.col('to_time')),
-          '%Y-%m-%d %H:%i:%s'
-        ),
-        {
-          [Op.gte]: currentDateTime
-        }
-      ),
+      where: {
+        [Op.and]: [
+          Sequelize.where(
+            Sequelize.fn(
+              'STR_TO_DATE',
+              Sequelize.fn('CONCAT', Sequelize.col('todate'), ' ', Sequelize.col('to_time')),
+              '%Y-%m-%d %H:%i:%s'
+            ),
+            { [Op.gte]: currentDateTime }
+          ),
+          { deletedAt: null } // <-- This ensures soft-deleted records are excluded
+        ]
+      },
       include: [
         {
           model: RiskandResponseModel,
-          required: false // optional: still return alerts even if no risk is found
+          required: false
         }
       ],
       order: [['todate', 'DESC']],
