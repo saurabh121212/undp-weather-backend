@@ -379,7 +379,7 @@ async function getAlartsByDate(modal, todayDate, RiskandResponseModel, todayTime
             ),
             { [Op.gte]: currentDateTime }
           ),
-          { deletedAt: null } // <-- This ensures soft-deleted records are excluded
+          {deletedAt: null} // <-- This ensures soft-deleted records are excluded
         ]
       },
       include: [
