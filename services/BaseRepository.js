@@ -370,29 +370,26 @@ async function getAlartsByDate(modal, todayDate, RiskandResponseModel, todayTime
     // const currentDateTime = new Date(`${todayDate}T${todayTime}`);
     // console.log("Current DateTime:", currentDateTime);
     const results = await modal.findAll({
-      where: {
-        [Op.and]: [
-          Sequelize.where(
-            Sequelize.fn(
-              'STR_TO_DATE',
-              Sequelize.fn('CONCAT', Sequelize.col('todate'), ' ', Sequelize.col('to_time')),
-              '%Y-%m-%d %H:%i'
-            ),
-            {
-              [Op.gte]: Sequelize.literal(`STR_TO_DATE('${todayDate} ${todayTime}', '%Y-%m-%d %H:%i')`)
-            }
-          ),
-          { deletedAt: null }
-        ]
-      },
-      include: [
+        where: {
+    [Op.and]: [
+      Sequelize.where(
+        Sequelize.fn('TIMESTAMP', Sequelize.col('todate'), Sequelize.col('to_time')),
         {
-          model: RiskandResponseModel,
-          required: false
+          [Op.gte]: `${todayDate} ${todayTime}:00`
         }
-      ],
-      order: [['todate', 'DESC']],
-    });
+      ),
+      { deletedAt: null }
+    ]
+  },
+  include: [
+    {
+      model: RiskandResponseModel,
+      required: false
+    }
+  ],
+  order: [['todate', 'DESC']],
+  logging: console.log
+});
     return results;
   } catch (error) {
     console.error('Error fetching weather alarts data:', error);
