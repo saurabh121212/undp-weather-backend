@@ -9,7 +9,7 @@ module.exports = {
   baseBulkCreate: bulkCreate,
   baseDetail: detail,
   baseList: list,
-  baseList2:list2,
+  baseList2: list2,
   baseUpdate: update,
   baseDelete: deleteEntry,
   baseRestore: baseRestore,
@@ -179,18 +179,18 @@ async function list(modal, params) {
 
 
 
-async function list2(modal, params,modal2) {
+async function list2(modal, params, modal2) {
   let withPagination = false;
 
 
   const query = {
     where: params.searchParams || params.where || {},
     include: [
-        {
-          model: modal2,
-          required: false // optional: include even if no match
-        }
-      ],
+      {
+        model: modal2,
+        required: false // optional: include even if no match
+      }
+    ],
   };
 
   if (params.hasOwnProperty('attributes')) {
@@ -337,7 +337,7 @@ async function getallByLocation(modal, location_name, startDate) {
 
 
 
-async function getAlartsByDate(modal, todayDate ,RiskandResponseModel,todayTime) {
+async function getAlartsByDateOld(modal, todayDate, RiskandResponseModel, todayTime) {
   try {
     const results = await modal.findAll({
       where: {
@@ -361,6 +361,39 @@ async function getAlartsByDate(modal, todayDate ,RiskandResponseModel,todayTime)
     console.error('Error fetching weather alarts data:', error);
     throw error;
   }
+
+}
+
+
+async function getAlartsByDate(modal, todayDate, RiskandResponseModel, todayTime) {
+  try {
+    const currentDateTime = new Date(`${todayDate}T${todayTime}`);
+
+    const results = await modal.findAll({
+      where: Sequelize.where(
+        Sequelize.fn(
+          'STR_TO_DATE',
+          Sequelize.fn('CONCAT', Sequelize.col('todate'), ' ', Sequelize.col('to_time')),
+          '%Y-%m-%d %H:%i:%s'
+        ),
+        {
+          [Op.gte]: currentDateTime
+        }
+      ),
+      include: [
+        {
+          model: RiskandResponseModel,
+          required: false // optional: still return alerts even if no risk is found
+        }
+      ],
+      order: [['todate', 'DESC']],
+    });
+    return results;
+  } catch (error) {
+    console.error('Error fetching weather alarts data:', error);
+    throw error;
+  }
+
 }
 
 
@@ -461,7 +494,7 @@ async function getDashboardUserRigionWise(modal, year) {
     });
 
     return usersByRegion
-    
+
   } catch (error) {
     console.error('Error fetching weather alarts data:', error);
     throw error;
