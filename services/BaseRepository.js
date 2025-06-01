@@ -368,6 +368,7 @@ async function getAlartsByDateOld(modal, todayDate, RiskandResponseModel, todayT
 async function getAlartsByDate(modal, todayDate, RiskandResponseModel, todayTime) {
   try {
     const currentDateTime = new Date(`${todayDate}T${todayTime}`);
+    console.log("Current DateTime:", currentDateTime);
     const results = await modal.findAll({
       where: {
         [Op.and]: [
@@ -377,7 +378,7 @@ async function getAlartsByDate(modal, todayDate, RiskandResponseModel, todayTime
               Sequelize.fn('CONCAT', Sequelize.col('todate'), ' ', Sequelize.col('to_time')),
               '%Y-%m-%d %H:%i:%s'
             ),
-            { [Op.gte]: currentDateTime }
+            { [Op.gte]: currentDateTime}
           ),
           {deletedAt: null} // <-- This ensures soft-deleted records are excluded
         ]
