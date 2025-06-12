@@ -448,9 +448,6 @@ async function getDashboardWeatherDataRequests(modal, year) {
   }
 }
 
-
-
-
 async function getDashboardAlartsType(modal, year) {
   try {
     const currentYear = year;

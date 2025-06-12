@@ -66,6 +66,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false, // or false if required
         },  
 
+    classification: {
+            type: DataTypes.STRING(400),
+            allowNull: false, // or false if required
+        }, 
+
     }, {
         paranoid: true,
         timestamps: true,
