@@ -168,7 +168,8 @@ module.exports.loginUser = async (req, res, next) => {
     }
     const { email, password ,divice_id,divice_type,divice_token } = req.body;
 
-    const user = await UserModel.findOne({ where: {email}, attributes: ['id', 'email', 'password', 'name','location_id','location_name','address'],});
+
+    const user = await UserModel.findOne({ where: {email}, attributes: ['id', 'email', 'password', 'name','location_id','location_name','address','phone','gender'],});
     if (!user) {
         return res.status(400).json({ error: 'Invalid email or password 1' });
     }
