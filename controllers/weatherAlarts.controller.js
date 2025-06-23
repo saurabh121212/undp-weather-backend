@@ -50,6 +50,9 @@ module.exports.get = async (req, res, next) => {
         if (!WeatherAlarts) {
             return res.status(400).json({ error: 'Error fetching Weather Alarts' });
         }
+
+
+
         res.status(201).json(WeatherAlarts);
     }
     catch (error) {
@@ -109,8 +112,12 @@ module.exports.update = async (req, res, next) => {
         if (!WeatherAlarts) {
             return res.status(400).json({ error: 'Error updating Weather Alarts' });
         }
+
+        // Send notification to all users
+        sendNotificationToAllUsers(payload.name, payload.short_description);
+
         res.status(201).json({
-            message: 'Risk and Weather Alarts updated successfully',
+            message: 'And Weather Alarts updated successfully',
             data: WeatherAlarts
         });
     }
