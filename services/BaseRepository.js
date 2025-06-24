@@ -275,17 +275,46 @@ function baseRestore(modal, searchParams) {
 }
 
 
+// async function getWeatherDataFromDate(modal, locationId, startDate) {
+//   try {
+//     const results = await modal.findAll({
+//       where: {
+//         deletedAt: null,
+//         location_id: locationId,
+//         date: {
+//           [Op.gte]: startDate
+//         }
+//       },
+//       // order: [['id', 'DESC']],
+//     });
+
+//     return results;
+//   } catch (error) {
+//     console.error('Error fetching weather data:', error);
+//     throw error;
+//   }
+// }
+
+
+
 async function getWeatherDataFromDate(modal, locationId, startDate) {
+  const baseDate = new Date(startDate);
+
+  // Calculate one day earlier using native JS
+  const oneDayBefore = new Date(baseDate);
+  oneDayBefore.setDate(baseDate.getDate() - 1);
+  oneDayBefore.setHours(0, 0, 0, 0); // normalize to start of day
+
   try {
     const results = await modal.findAll({
       where: {
         deletedAt: null,
         location_id: locationId,
-        date: {
-          [Op.gte]: startDate
-        }
-      },
-      // order: [['id', 'DESC']],
+        [Op.or]: [
+          { date: { [Op.gte]: baseDate } },       // from startDate onward
+          { date: oneDayBefore }                  // exactly one day before
+        ]
+      }
     });
 
     return results;
@@ -294,7 +323,6 @@ async function getWeatherDataFromDate(modal, locationId, startDate) {
     throw error;
   }
 }
-
 
 
 async function getSearchByLocation(modal, location_name, startDate) {

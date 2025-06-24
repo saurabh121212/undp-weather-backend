@@ -33,9 +33,6 @@ router.get('/all_location', WeatherDetailsController.allLocation);
 
 
 
-
-
-
 // router.put('/delete/:id',authMiddleware.authAdmin, FeedbackController.delete);
 
 module.exports = router;
