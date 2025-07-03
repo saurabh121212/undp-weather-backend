@@ -1,6 +1,7 @@
 const BaseRepo = require('../services/BaseRepository');
 const { WeatherDetailModel } = require('../models');
 const { validationResult } = require('express-validator');
+const e = require('express');
 
 
 module.exports.add = async (req, res, next) => {
@@ -109,6 +110,8 @@ module.exports.locationWeatherUpdates = async (req, res, next) => {
     }
 
     console.log(params);
+
+    // Check if previous date data is available or not 
 
     try {
         const WeatherDataRequest = await BaseRepo.getWeatherDataFromDate(WeatherDetailModel,location_id, date);

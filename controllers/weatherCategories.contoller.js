@@ -12,6 +12,11 @@ module.exports.addWeatherCategories = async (req, res, next) => {
 
     const payload = req.body;
 
+    const isNameExist = await WeatherCategoriesModel.findOne({ where: {name: payload.name } });
+    if (isNameExist) {
+        return res.status(400).json({ error: 'Weather Category name already exist' });
+    }
+
     try {
     const WeatherCategories = await BaseRepo.baseCreate(WeatherCategoriesModel, payload);
     if(!WeatherCategories){
@@ -62,6 +67,11 @@ module.exports.updateWeatherCategories = async (req, res, next) => {
 
     const payload = req.body;
     const id = req.params.id;
+
+    const isNameExist = await WeatherCategoriesModel.findOne({ where: {name: payload.name } });
+    if (isNameExist) {
+        return res.status(400).json({ error: 'Weather Category name already exist' });
+    }
 
     try {
     const WeatherCategories = await BaseRepo.baseUpdate(WeatherCategoriesModel, {id}, payload);

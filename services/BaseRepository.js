@@ -325,6 +325,7 @@ async function getWeatherDataFromDate(modal, locationId, startDate) {
 }
 
 
+
 async function getSearchByLocation(modal, location_name, startDate) {
   try {
     const results = await modal.findAll({
