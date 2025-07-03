@@ -18,6 +18,7 @@ module.exports = {
   baseGalleryList: GalleryList,
   baseFindByform_code: findByform_code,
   getWeatherDataFromDate: getWeatherDataFromDate,
+  getWeatherDataFromDateV2: getWeatherDataFromDateV2,
   getSearchByLocation: getSearchByLocation,
   getallByLocation: getallByLocation,
   getAlartsByDate: getAlartsByDate,
@@ -275,25 +276,25 @@ function baseRestore(modal, searchParams) {
 }
 
 
-// async function getWeatherDataFromDate(modal, locationId, startDate) {
-//   try {
-//     const results = await modal.findAll({
-//       where: {
-//         deletedAt: null,
-//         location_id: locationId,
-//         date: {
-//           [Op.gte]: startDate
-//         }
-//       },
-//       // order: [['id', 'DESC']],
-//     });
+async function getWeatherDataFromDateV2(modal, locationId, startDate) {
+  try {
+    const results = await modal.findAll({
+      where: {
+        deletedAt: null,
+        location_id: locationId,
+        date: {
+          [Op.gte]: startDate
+        }
+      },
+      // order: [['id', 'DESC']],
+    });
 
-//     return results;
-//   } catch (error) {
-//     console.error('Error fetching weather data:', error);
-//     throw error;
-//   }
-// }
+    return results;
+  } catch (error) {
+    console.error('Error fetching weather data:', error);
+    throw error;
+  }
+}
 
 
 

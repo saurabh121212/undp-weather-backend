@@ -27,6 +27,8 @@ router.get('/weather_updates', WeatherDetailsController.weatherUpdates);
 
 router.get('/location_weather_updates', WeatherDetailsController.locationWeatherUpdates);
 
+router.get('/location_weather_updatesV2', WeatherDetailsController.locationWeatherUpdatesV2);
+
 router.get('/search_location', WeatherDetailsController.searchLocation);
 
 router.get('/all_location', WeatherDetailsController.allLocation);

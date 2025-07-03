@@ -128,6 +128,44 @@ module.exports.locationWeatherUpdates = async (req, res, next) => {
 
 
 
+module.exports.locationWeatherUpdatesV2 = async (req, res, next) => {
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+    const date = req.query.date || null;
+    const location_id = req.query.location_id || null;
+    const params = {
+        //searchParams: {date},
+        where: {location_id: req.query.location_id,
+        date: date},
+        limit: limit,
+        offset: offset,
+        page: page,
+        order: [["id", "DESC"]],
+    }
+
+    console.log(params);
+
+    // Check if previous date data is available or not 
+
+    try {
+        const WeatherDataRequest = await BaseRepo.getWeatherDataFromDateV2(WeatherDetailModel,location_id, date);
+        if (!WeatherDataRequest) {
+            return res.status(400).json({ error: 'Error fetching Weather Data Request' });
+        }
+        res.status(201).json(WeatherDataRequest);
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
+
+
+
 
 module.exports.searchLocation = async (req, res, next) => {
 
