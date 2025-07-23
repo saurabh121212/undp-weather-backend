@@ -29,6 +29,8 @@ router.post('/login',[
     body('divice_token').notEmpty().withMessage('divice_token is required'),
 ], userController.loginUser);
 
+
+
 router.post('/add_user_without_ragister',[
     body('divice_id').notEmpty().withMessage('divice_id is required'),
     body('divice_type').notEmpty().withMessage('divice_type is required'),

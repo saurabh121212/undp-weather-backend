@@ -36,7 +36,7 @@ module.exports.loginAdmin = async (req, res, next) => {
     const { email, password } = req.body;
 
 
-    const admin = await AdminModel.findOne({ where: {email}, attributes: ['id', 'email', 'password', 'name'],});
+    const admin = await AdminModel.findOne({ where: {email}, attributes: ['id', 'email', 'password', 'name', 'user_type'],});
     if (!admin) {
         return res.status(400).json({ error: 'Invalid email or password 1' });
     }

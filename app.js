@@ -12,14 +12,11 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static('public'));
 
-
 const events = require('events');
 const eventEmitter = new events.EventEmitter();
 
-
 global._config = require('./config/config.js');
 console.log('Environment:', _config.app);
-
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
